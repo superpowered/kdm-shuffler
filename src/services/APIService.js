@@ -6,15 +6,18 @@ const API = 'https://api.thewatcher.io/';
 export default class APIService
 {
     //Gets Cards, turns into array - Returns
-    static getCards(cardType)
+    static getCards(cardType, forceClearCache = false)
     {
-        //TODO: set timeout on cache
         const cache = JSON.parse(localStorage.getItem(API + 'game_asset/' + cardType));
-        if(cache && cache.length)
+        const cacheTime = localStorage.getItem(API + 'game_asset/' + cardType + '_time');
+        const curTime = Math.round((new Date()).getTime() / 1000);
+
+        if(cache && cache.length && !forceClearCache && cacheTime && curTime - parseInt(cacheTime) < 86400) //1 day
         {
+            //console.log('Cache Used! ' + cardType, curTime - parseInt(cacheTime));
             return new Promise((resolve) =>
             {
-                resolve(cache)
+                resolve(cache);
             })
         }
 
@@ -35,6 +38,7 @@ export default class APIService
 
                 //Cache data
                 localStorage.setItem(API + 'game_asset/' + cardType, JSON.stringify(returnArray));
+                localStorage.setItem(API + 'game_asset/' + cardType + '_time', curTime.toString());
                 return returnArray;
             });
     }
