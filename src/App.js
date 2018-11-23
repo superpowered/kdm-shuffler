@@ -10,49 +10,56 @@ class App extends Component
     constructor(props)
     {
         super(props);
-        this.state = {cards: null};
+        this.state =
+        {
+            cards:
+            {
+                fighting_arts:
+                {
+                    title: 'Fighting Arts',
+                    name: 'fighting_art',
+                    cards: []
+                },
+                disorders:
+                {
+                    title: 'Disorders',
+                    name: 'disorder',
+                    cards: []
+                },
+                resources:
+                {
+                    title: 'Resources',
+                    name: 'resource',
+                    cards: []
+                }
+            }
+        };
     }
 
     componentDidMount()
     {
-        let cards = {};
+        //Get all cards on app init
+        let cards = {...this.state.cards};
+        let promises = [];
 
-        let cardsFightingArts = new Promise((resolve, reject) =>
+        for(let cardType in cards)
         {
-            APIService.getCards('fighting_art')
-                .then( fightingArts =>
-                {
-                    cards.fighting_arts = fightingArts;
-                    resolve();
-                })
-                .catch((err) => reject(err));
-        });
-        let cardsDisorders = new Promise((resolve, reject) =>
-        {
-            APIService.getCards('disorder')
-                .then( disorders =>
-                {
-                    cards.disorders = disorders;
-                    resolve();
-                })
-                .catch((err) => reject(err));
-        });
-        let cardsResources = new Promise((resolve, reject) =>
-        {
-            APIService.getCards('resource')
-                .then( resources =>
-                {
-                    cards.resources = resources;
-                    resolve();
-                })
-                .catch((err) => reject(err));
-        });
-        let promises = [cardsFightingArts, cardsDisorders, cardsResources];
+            const theseCards = this.state.cards[cardType];
+            let promise = new Promise((resolve, reject) =>
+            {
+                APIService.getCards(theseCards.name)
+                    .then( ResponseCards =>
+                    {
+                        cards[cardType].cards = ResponseCards;
+                        resolve();
+                    })
+                    .catch((err) => reject(err));
+            });
+            promises.push(promise);
+        }
 
         Promise.all(promises)
-            .then(() => this.setState({cards: cards}));
-
-
+            .then(() => {this.setState({cards: cards}); console.log(cards); });
     }
 
     //Under list?
@@ -84,37 +91,32 @@ class App extends Component
 
     render()
     {
+        let cardList = [];
+        for(let cardType in this.state.cards)
+        {
+            if(this.state.cards.hasOwnProperty(cardType))
+            {
+                cardList.push((
+                    <div key={cardType} className="card-list">
+                        <h3>
+                            {this.state.cards[cardType].title}
+                        </h3>
+                        {this.state.cards[cardType].cards.map((card, index) => <div key={index}>{card.name}</div>)}
+                    </div>
+                ));
+            }
+        }
+
         return (
             <div className="app">
                 <header className="app-header">
-                    {
-                        //TODO: make these lists components
-                    }
                     <h1>
-                        Fighting Arts:
+                        Kingdom Death Cards
                     </h1>
-                    {
-                        this.state.cards &&
-                        this.state.cards.fighting_arts &&
-                        this.state.cards.fighting_arts.map((card, index) => <div key={index}>{card.name}</div>)
-                    }
-                    <h1>
-                        Disorders:
-                    </h1>
-                    {
-                        this.state.cards &&
-                        this.state.cards.disorders &&
-                        this.state.cards.disorders.map((card, index) => <div key={index}>{card.name}</div>)
-                    }
-                    <h1>
-                        Fighting Arts:
-                    </h1>
-                    {
-                        this.state.cards &&
-                        this.state.cards.resources &&
-                        this.state.cards.resources.map((card, index) => <div key={index}>{card.name}</div>)
-                    }
                 </header>
+                <main className="app-body">
+                    {cardList}
+                </main>
             </div>
         );
     }
