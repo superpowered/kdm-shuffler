@@ -62,7 +62,7 @@ class App extends Component
             .then(() => {this.setState({cards: cards}); console.log(cards); });
     }
 
-    //Under list?
+    //Under list component
     filterCards(filter)
     {
         //filter down current set of cards by ones that match filter

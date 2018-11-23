@@ -8,7 +8,15 @@ export default class APIService
     //Gets Cards, turns into array - Returns
     static getCards(cardType)
     {
-        //TODO: check our local storage first
+        //TODO: set timeout on cache
+        const cache = JSON.parse(localStorage.getItem(API + 'game_asset/' + cardType));
+        if(cache && cache.length)
+        {
+            return new Promise((resolve) =>
+            {
+                resolve(cache)
+            })
+        }
 
         return axios
             .get(API + 'game_asset/' + cardType)
@@ -24,6 +32,9 @@ export default class APIService
                         returnArray.push( card );
                     }
                 }
+
+                //Cache data
+                localStorage.setItem(API + 'game_asset/' + cardType, JSON.stringify(returnArray));
                 return returnArray;
             });
     }
