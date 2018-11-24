@@ -3,6 +3,9 @@ import React, {Component} from 'react';
 //Services
 import APIService from './services/APIService';
 
+//Components
+import Card from './components/Card';
+
 import './App.css';
 
 class App extends Component
@@ -108,7 +111,7 @@ class App extends Component
     cardFilter = (cards) =>
     {
         const filter = this.state.card_filter.toLowerCase();
-        const filteredCards = cards.filter((card) =>
+        return cards.filter((card) =>
         {
             let show = false;
 
@@ -123,8 +126,6 @@ class App extends Component
 
             return show;
         });
-
-        return filteredCards;
     };
 
     render()
@@ -147,9 +148,10 @@ class App extends Component
                         <h3>
                             {this.state.card_types[cardType].title}
                         </h3>
+                        <hr />
                         {
                             filteredCards
-                                .map((card, index) => <div key={index}>{card.name}</div>)
+                                .map((card, index) => <Card key={index} card={card} />)
                         }
                     </div>
                 ));
