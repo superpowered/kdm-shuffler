@@ -12,7 +12,8 @@ class App extends Component
         super(props);
         this.state =
         {
-            cards:
+            card_filter: '',
+            card_types:
             {
                 fighting_arts:
                 {
@@ -32,25 +33,26 @@ class App extends Component
                     name: 'resource',
                     cards: []
                 }
-            }
+            },
+
         };
     }
 
     componentDidMount()
     {
         //Get all cards on app init
-        let cards = {...this.state.cards};
+        let cardTypes = {...this.state.card_types};
         let promises = [];
 
-        for(let cardType in cards)
+        for(let cardType in cardTypes)
         {
-            const theseCards = this.state.cards[cardType];
+            const theseCards = cardTypes[cardType];
             let promise = new Promise((resolve, reject) =>
             {
                 APIService.getCards(theseCards.name)
                     .then( ResponseCards =>
                     {
-                        cards[cardType].cards = ResponseCards;
+                        cardTypes[cardType].cards = ResponseCards;
                         resolve();
                     })
                     .catch((err) => reject(err));
@@ -59,7 +61,7 @@ class App extends Component
         }
 
         Promise.all(promises)
-            .then(() => {this.setState({cards: cards}); console.log(cards); });
+            .then(() => {this.setState({card_types: cardTypes}); });
     }
 
     //Under list component
@@ -89,23 +91,55 @@ class App extends Component
     //deck.removeCard()
     //deck.addCard()
 
+    filterResults = (filter) =>
+    {
+
+    };
+
+    handleChange = (e) =>
+    {
+        this.setState({
+            card_filter: e.target.value
+        });
+
+        this.filterResults(e.target.value);
+    };
+
     render()
     {
         let cardList = [];
-        for(let cardType in this.state.cards)
+        for(let cardType in this.state.card_types)
         {
-            if(this.state.cards.hasOwnProperty(cardType))
+            if(this.state.card_types.hasOwnProperty(cardType))
             {
+                if(!this.state.card_types[cardType].cards)
+                    continue;
+
+                const filteredCards = this.state.card_types[cardType].cards
+                    .filter((card)=> {
+                        let cardName = card.name.toLowerCase();
+                        return cardName.indexOf(this.state.card_filter.toLowerCase()) !== -1
+                    });
+
+                if(!filteredCards.length)
+                    continue;
+
                 cardList.push((
                     <div key={cardType} className="card-list">
                         <h3>
-                            {this.state.cards[cardType].title}
+                            {this.state.card_types[cardType].title}
                         </h3>
-                        {this.state.cards[cardType].cards.map((card, index) => <div key={index}>{card.name}</div>)}
+                        {
+                            filteredCards
+                                .map((card, index) => <div key={index}>{card.name}</div>)
+                        }
                     </div>
                 ));
             }
         }
+
+        if(!cardList.length)
+            cardList = 'No cards found';
 
         return (
             <div className="app">
@@ -113,6 +147,7 @@ class App extends Component
                     <h1>
                         Kingdom Death Cards
                     </h1>
+                    <input type="search" onChange={this.handleChange} value={this.state.card_filter}/>
                 </header>
                 <main className="app-body">
                     {cardList}
