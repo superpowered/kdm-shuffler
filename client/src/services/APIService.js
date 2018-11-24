@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = 'https://api.thewatcher.io/';
+const API = '/api/';
 
 
 export default class APIService
@@ -25,21 +25,11 @@ export default class APIService
             .get(API + 'game_asset/' + cardType)
             .then((response) =>
             {
-                let returnArray = [];
-                for (let item in response.data)
-                {
-                    if(response.data.hasOwnProperty(item))
-                    {
-                        let card = response.data[item];
-                        card.key = item;
-                        returnArray.push( card );
-                    }
-                }
-
+                console.log(response);
                 //Cache data
-                localStorage.setItem(API + 'game_asset/' + cardType, JSON.stringify(returnArray));
+                localStorage.setItem(API + 'game_asset/' + cardType, JSON.stringify(response.data));
                 localStorage.setItem(API + 'game_asset/' + cardType + '_time', curTime.toString());
-                return returnArray;
+                return response.data;
             });
     }
 }

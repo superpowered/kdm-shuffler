@@ -52,7 +52,7 @@ class App extends Component
             const theseCards = cardTypes[cardType];
             let promise = new Promise((resolve, reject) =>
             {
-                APIService.getCards(theseCards.name)
+                APIService.getCards(theseCards.name, true)
                     .then( ResponseCards =>
                     {
                         cardTypes[cardType].cards = ResponseCards;
