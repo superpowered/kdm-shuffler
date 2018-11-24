@@ -105,6 +105,28 @@ class App extends Component
         this.filterResults(e.target.value);
     };
 
+    cardFilter = (cards) =>
+    {
+        const filter = this.state.card_filter.toLowerCase();
+        const filteredCards = cards.filter((card) =>
+        {
+            let show = false;
+
+            const propertiesToCheck = ['name', 'selector_text', 'sub_type_pretty', 'type_pretty', 'desc', 'flavor_text']
+
+            for(let x = 0; x < propertiesToCheck.length; x++)
+            {
+                const property = propertiesToCheck[x];
+                if(card[property] && card[property].toLowerCase().indexOf(filter) !== -1)
+                    show = true;
+            }
+
+            return show;
+        });
+
+        return filteredCards;
+    };
+
     render()
     {
         let cardList = [];
@@ -115,11 +137,7 @@ class App extends Component
                 if(!this.state.card_types[cardType].cards)
                     continue;
 
-                const filteredCards = this.state.card_types[cardType].cards
-                    .filter((card)=> {
-                        let cardName = card.name.toLowerCase();
-                        return cardName.indexOf(this.state.card_filter.toLowerCase()) !== -1
-                    });
+                const filteredCards = this.cardFilter(this.state.card_types[cardType].cards);
 
                 if(!filteredCards.length)
                     continue;
