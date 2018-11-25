@@ -22,21 +22,41 @@ class App extends Component
                 {
                     title: 'Fighting Arts',
                     name: 'fighting_art',
-                    cards: []
+                    cards: [],
                 },
                 disorders:
                 {
                     title: 'Disorders',
                     name: 'disorder',
-                    cards: []
+                    cards: [],
                 },
                 resources:
                 {
                     title: 'Resources',
                     name: 'resource',
-                    cards: []
+                    cards: [],
                 }
             },
+            decks: [],
+            expansions:
+            [
+                {
+                    title: 'Core',
+                    name: 'core',
+                },
+                {
+                    title: 'Gorm',
+                    name: 'gorm',
+                    decks_needed:
+                    [
+                       {
+                           title: 'Gorm Resources',
+                           name: 'gorm_resources',
+                           type: 'resources'
+                       }
+                    ]
+                }
+            ]
 
         };
     }
@@ -110,7 +130,7 @@ class App extends Component
 
     cardFilter = (cards) =>
     {
-        const filter = this.state.card_filter.toLowerCase();
+        const filter = this.state.card_filter.toLowerCase().trim();
         return cards.filter((card) =>
         {
             let show = false;
@@ -128,34 +148,108 @@ class App extends Component
         });
     };
 
+    buildDecks = () =>
+    {
+        //1 disorder deck
+        //1 fa deck
+        //1 sfa deck
+        //variable amount of resource decks
+
+        let expansions = this.state.expansions;
+        let decks = [];
+
+        //1. build disorder deck
+        console.log(this.filterCardsByExpansion(this.state.card_types.disorders.cards, this.state.expansions));
+        decks.push({
+            title: 'Disorders',
+            type: 'disorder',
+            cards: this.filterCardsByExpansion(this.state.card_types.disorders.cards, this.state.expansions)
+        });
+
+        //2. build fa deck
+        decks.push({
+            title: 'Fighting Arts',
+            type: 'fighting_arts',
+            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.fighting_arts.cards, this.state.expansions), 'fighting_art')
+        });
+
+        //3. build sfa deck
+        decks.push({
+            title: 'Secret Fighting Arts',
+            type: 'secret_fighting_arts',
+            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.fighting_arts.cards, this.state.expansions), 'secret_fighting_art')
+        });
+
+        //4. build resource decks
+        //4.1. main resources
+        decks.push({
+            title: 'Basic Resources',
+            type: 'basic_resources',
+            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, this.state.expansions), 'basic_resources')
+        });
+
+        //4.2. monster resources
+        for(let x = 0; x < expansions.length; x++)
+        {
+            if(!expansions[x].decks_needed)
+                continue;
+            for(let y = 0; y < expansions[x].decks_needed.length; y++)
+            {
+                decks.push({
+                    title: expansions[x].decks_needed[y].title,
+                    type: expansions[x].decks_needed[y].type,
+                    cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types[expansions[x].decks_needed[y].type].cards, this.state.expansions), expansions[x].decks_needed[y].name)
+                });
+            }
+        }
+
+        //TODO: varying amounts for resource decks
+
+        this.setState({decks: decks});
+    };
+
+    filterCardsByExpansion(cards, expansions)
+    {
+        const hasCore = expansions.filter((expansion) => expansion.name === 'core').length;
+        if(hasCore)
+            return cards.filter((card) => !card.expansion || expansions.filter((expansion) => expansion.name === card.expansion).length);
+        else
+            return cards.filter((card) => expansions.filter((expansion) => expansion.name === card.expansion).length);
+
+    }
+
+    filterCardsBySubType(cards, type)
+    {
+        return cards.filter((card) => card.sub_type && type === card.sub_type);
+    }
+
     render()
     {
+
         let cardList = [];
-        for(let cardType in this.state.card_types)
+        for(let x = 0; x < this.state.decks.length; x++)
         {
-            if(this.state.card_types.hasOwnProperty(cardType))
-            {
-                if(!this.state.card_types[cardType].cards)
-                    continue;
+            const deck = this.state.decks[x];
+            if(!deck.cards || !deck.cards.length)
+                continue;
 
-                const filteredCards = this.cardFilter(this.state.card_types[cardType].cards);
+            const filteredCards = this.cardFilter(deck.cards);
 
-                if(!filteredCards.length)
-                    continue;
+            if(!filteredCards.length)
+                continue;
 
-                cardList.push((
-                    <div key={cardType} className="card-list">
-                        <h3 className="list-title">
-                            {this.state.card_types[cardType].title}
-                        </h3>
-                        <hr className="list-break"/>
-                        {
-                            filteredCards
-                                .map((card, index) => <Card key={index} card={card} />)
-                        }
-                    </div>
-                ));
-            }
+            cardList.push((
+                <div key={deck.type} className="card-list">
+                    <h3 className="list-title">
+                        {deck.title}
+                    </h3>
+                    <hr className="list-break"/>
+                    {
+                        filteredCards
+                            .map((card, index) => <Card key={index} card={card} />)
+                    }
+                </div>
+            ));
         }
 
         if(!cardList.length)
@@ -168,6 +262,7 @@ class App extends Component
                         Kingdom Death Cards
                     </h1>
                     <input className="card-filter-input" type="search" onChange={this.handleChange} value={this.state.card_filter}/>
+                    Gorm: <input type="checkbox" onClick={this.buildDecks}/>
                 </header>
                 <main className="app-body">
                     <div className="card-holder">
