@@ -1,0 +1,75 @@
+$font_1: 'Open Sans', sans-serif;
+$font_2: 'Libre Baskerville', serif;
+
+*
+{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: $font_1;
+}
+h1,h2,h3,h4,h5,h6
+{
+    font-family: $font_2;
+    font-weight: 300;
+}
+
+
+@mixin aspect-ratio($width, $height) {
+    position: relative;
+    &:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: ($height / $width) * 100%;
+    }
+    > .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+.page-title
+{
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: .5em;
+    font-size: 2em;
+}
+
+.card-filter-input
+{
+    display: block;
+    margin: 0 auto 1em;
+    max-width: 30em;
+    width: 100%;
+    font-size: 1em;
+}
+
+.card-list
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+
+    > .wrapper
+    {
+
+    }
+    .list-title
+    {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+    .list-break
+    {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+}
+//Cards
+@import "styles/card";

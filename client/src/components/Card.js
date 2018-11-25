@@ -5,21 +5,35 @@ export default class Card extends Component
 {
     render()
     {
+        const card = this.props.card;
 
-        const clean = sanitizeHtml(this.props.card.desc,
+        const description = card.desc ? card.desc : card.survivor_effect;
+        let clean_desc = sanitizeHtml(description,
         {
-            allowedTags: ['b', 'i', 'em', 'strong', 'a', 'td', 'tr', 'table','span', 'div'],
-            allowedAttributes: {
-                a: ['href', 'target', 'class']
-            }
+            allowedTags: ['b', 'i', 'em', 'strong', 'a', 'td', 'tr', 'table','span', 'div','br','font'],
+            allowedClasses: {'font': ['kdm_font','inline_shield','Dormenatus','zebra','roll','result','kd_pink_font','kd_blue_font']}
         });
-        return (
-            <div className='card'>
-                <h4>
-                    {this.props.card.name}
-                </h4>
-                <div className="card-description" dangerouslySetInnerHTML={{__html:clean }}>
+        if(clean_desc === 'undefined')
+            clean_desc = '';
 
+        return (
+            <div className={"card " + card.type + " " + card.sub_type}>
+                <div className="wrapper">
+                    <h4 className="title">
+                        {card.name}
+                    </h4>
+                    <div className="sub-types">
+                        {card.sub_type_pretty}
+                    </div>
+                    <div className="image">
+
+                    </div>
+                    <div className="flavor-text">
+                        {card.flavor_text}
+                    </div>
+                    <div className="description" dangerouslySetInnerHTML={{__html:clean_desc }}>
+
+                    </div>
                 </div>
             </div>
         );

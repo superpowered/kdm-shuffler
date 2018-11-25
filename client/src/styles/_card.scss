@@ -1,0 +1,127 @@
+.card
+{
+    width: 16em;
+    box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+    border-radius: 10px;
+    padding: 1em;
+    margin: .5em;
+    text-align: center;
+    line-height: 1.5;
+    min-height: 25em;
+    position: relative;
+
+    > .wrapper
+    {
+        position: relative;
+        z-index: 2;
+    }
+
+    .title
+    {
+        font-size: 1em;
+        margin-bottom: 0;
+        font-weight: 100;
+    }
+
+    .sub-types
+    {
+        margin-bottom: 1em;
+        font-size: .675em;
+        &:before,
+        &:after
+        {
+            display: inline;
+            content: '-';
+        }
+    }
+
+    .image
+    {
+        @include aspect-ratio(1.5,1);
+        background-color: rgba(109, 109, 109, 0.52);
+        margin-bottom: 1em;
+    }
+
+    .flavor-text
+    {
+        font-size: .675em;
+        font-style: italic;
+        margin-bottom: 1em;
+    }
+
+    .description
+    {
+        font-size: .675em;
+        padding-left: 1em;
+        padding-right: 1em;
+        br
+        {
+            //Hack due to api not wrapping text in paragraphs
+            content: "-" !important;
+            display: block !important;
+            margin-bottom: 1em !important;
+        }
+    }
+
+    &.fighting_arts
+    {
+        background: #e5e5e5;
+
+        .image
+        {
+            margin-left: -1em;
+            margin-right: -1em;
+        }
+    }
+
+    &.resources
+    {
+        background: #d3d5ae;
+        &:before
+        {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, #ddded9 0%, #d3d5ae 80%, #d3d5ae 100%);
+            background-size: 15em 15em;
+            background-repeat: no-repeat;
+            background-position: center 20px;
+        }
+
+        .title
+        {
+            font-weight: 700;
+            color: #788335;
+        }
+        .sub-types
+        {
+            font-weight: 700;
+            color: #788335;
+        }
+    }
+
+    &.disorders
+    {
+        color: white;
+        background: #212121;
+
+        &:before
+        {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, #5f6156 0%, #212121 70%, #212121 100%);
+            background-size: 15em 15em;
+            background-repeat: no-repeat;
+            background-position: center 20px;
+        }
+    }
+}

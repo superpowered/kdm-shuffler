@@ -145,10 +145,10 @@ class App extends Component
 
                 cardList.push((
                     <div key={cardType} className="card-list">
-                        <h3>
+                        <h3 className="list-title">
                             {this.state.card_types[cardType].title}
                         </h3>
-                        <hr />
+                        <hr className="list-break"/>
                         {
                             filteredCards
                                 .map((card, index) => <Card key={index} card={card} />)
@@ -164,13 +164,15 @@ class App extends Component
         return (
             <div className="app">
                 <header className="app-header">
-                    <h1>
+                    <h1 className="page-title">
                         Kingdom Death Cards
                     </h1>
-                    <input type="search" onChange={this.handleChange} value={this.state.card_filter}/>
+                    <input className="card-filter-input" type="search" onChange={this.handleChange} value={this.state.card_filter}/>
                 </header>
                 <main className="app-body">
-                    {cardList}
+                    <div className="card-holder">
+                        {cardList}
+                    </div>
                 </main>
             </div>
         );

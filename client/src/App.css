@@ -1,32 +1,127 @@
-.App {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Libre Baskerville", serif;
+  font-weight: 300; }
+
+.page-title {
   text-align: center;
-}
+  font-weight: 700;
+  margin-bottom: .5em;
+  font-size: 2em; }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
+.card-filter-input {
+  display: block;
+  margin: 0 auto 1em;
+  max-width: 30em;
+  width: 100%;
+  font-size: 1em; }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.card-list {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+  text-align: center; }
+  .card-list .list-title {
+    width: 100%;
+    margin-bottom: 1em; }
+  .card-list .list-break {
+    width: 100%;
+    margin-bottom: 1em; }
 
-.App-link {
-  color: #61dafb;
-}
+.card {
+  width: 16em;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 1em;
+  margin: .5em;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 25em;
+  position: relative; }
+  .card > .wrapper {
+    position: relative;
+    z-index: 2; }
+  .card .title {
+    font-size: 1em;
+    margin-bottom: 0;
+    font-weight: 100; }
+  .card .sub-types {
+    margin-bottom: 1em;
+    font-size: .675em; }
+    .card .sub-types:before, .card .sub-types:after {
+      display: inline;
+      content: '-'; }
+  .card .image {
+    position: relative;
+    background-color: rgba(109, 109, 109, 0.52);
+    margin-bottom: 1em; }
+    .card .image:before {
+      display: block;
+      content: "";
+      width: 100%;
+      padding-top: 66.66667%; }
+    .card .image > .content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0; }
+  .card .flavor-text {
+    font-size: .675em;
+    font-style: italic;
+    margin-bottom: 1em; }
+  .card .description {
+    font-size: .675em;
+    padding-left: 1em;
+    padding-right: 1em; }
+    .card .description br {
+      content: "-" !important;
+      display: block !important;
+      margin-bottom: 1em !important; }
+  .card.fighting_arts {
+    background: #e5e5e5; }
+    .card.fighting_arts .image {
+      margin-left: -1em;
+      margin-right: -1em; }
+  .card.resources {
+    background: #d3d5ae; }
+    .card.resources:before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at center, #ddded9 0%, #d3d5ae 80%, #d3d5ae 100%);
+      background-size: 15em 15em;
+      background-repeat: no-repeat;
+      background-position: center 20px; }
+    .card.resources .title {
+      font-weight: 700;
+      color: #788335; }
+    .card.resources .sub-types {
+      font-weight: 700;
+      color: #788335; }
+  .card.disorders {
+    color: white;
+    background: #212121; }
+    .card.disorders:before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at center, #5f6156 0%, #212121 70%, #212121 100%);
+      background-size: 15em 15em;
+      background-repeat: no-repeat;
+      background-position: center 20px; }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/*# sourceMappingURL=App.css.map */
