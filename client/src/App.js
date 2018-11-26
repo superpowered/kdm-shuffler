@@ -249,6 +249,14 @@ class App extends Component
             cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, expansions), 'strange_resources')
         });
 
+        //5. build vermin deck
+        decks.push({
+            title: 'Vermin',
+            type: 'vermin',
+            name: 'vermin',
+            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, expansions), 'vermin')
+        });
+
         //6. Expansion extra decks
         for(let x = 0; x < expansions.length; x++)
         {

@@ -3,17 +3,18 @@
     width: 16em;
     box-shadow: 2px 2px 2px rgba(0,0,0,.25);
     border-radius: 10px;
-    padding: 1em;
     margin: .5em;
     text-align: center;
     line-height: 1.5;
     min-height: 25em;
     position: relative;
+    overflow: hidden;
 
     > .wrapper
     {
         position: relative;
         z-index: 2;
+        padding: 1em;
     }
 
     .title
@@ -21,12 +22,16 @@
         font-size: 1em;
         margin-bottom: 0;
         font-weight: 100;
+        position: relative;
+        z-index: 2;
     }
 
     .sub-types
     {
         margin-bottom: 1em;
-        font-size: .675em;
+        font-size: .6em;
+        position: relative;
+        z-index: 2;
         &:before,
         &:after
         {
@@ -38,28 +43,53 @@
     .image
     {
         @include aspect-ratio(1.5,1);
-        background-color: rgba(109, 109, 109, 0.52);
         margin-bottom: 1em;
+        position: relative;
+        z-index: 1;
     }
 
     .flavor-text
     {
-        font-size: .675em;
+        font-size: .6em;
         font-style: italic;
         margin-bottom: 1em;
+        position: relative;
+        z-index: 2;
+        padding: 0 2em;
     }
 
     .description
     {
-        font-size: .675em;
+        font-size: .6em;
         padding-left: 1em;
         padding-right: 1em;
+        position: relative;
+        z-index: 2;
         br
         {
             //Hack due to api not wrapping text in paragraphs
             content: "-" !important;
             display: block !important;
             margin-bottom: 1em !important;
+        }
+
+        table
+        {
+            text-align: left;
+            border-collapse:collapse;
+            tr:nth-of-type(even)
+            {
+                background: rgba(0,0,0,.05);
+            }
+            td
+            {
+                padding: .25em;
+                vertical-align: top;
+                &:first-child
+                {
+                    width: 3em;
+                }
+            }
         }
 
         //TODO: need to make custom font for special icons
@@ -73,6 +103,7 @@
         {
             margin-left: -1em;
             margin-right: -1em;
+            background-color: rgba(0,0,0,.25);
         }
     }
 
@@ -110,6 +141,26 @@
     {
         color: white;
         background: #212121;
+
+        &:before
+        {
+            display: none;
+        }
+
+        > .wrapper
+        {
+            background: url('images/disorder-2.jpg') no-repeat top center;
+            background-size: contain;
+        }
+        .sub-types
+        {
+            opacity: 0;
+        }
+        .image
+        {
+            margin-bottom: 0;
+        }
+
 
         &:before
         {

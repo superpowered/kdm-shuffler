@@ -8,6 +8,11 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Libre Baskerville", serif;
   font-weight: 300; }
 
+.app-header {
+  padding: 1em;
+  text-align: center;
+  background: #f5f5f5; }
+
 .page-title {
   text-align: center;
   font-weight: 700;
@@ -32,7 +37,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  text-align: center; }
+  text-align: center;
+  margin: 1em 0; }
   .card-list .list-title {
     width: 100%;
     margin-bottom: 1em; }
@@ -44,29 +50,35 @@ h1, h2, h3, h4, h5, h6 {
   width: 16em;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  padding: 1em;
   margin: .5em;
   text-align: center;
   line-height: 1.5;
   min-height: 25em;
-  position: relative; }
+  position: relative;
+  overflow: hidden; }
   .card > .wrapper {
     position: relative;
-    z-index: 2; }
+    z-index: 2;
+    padding: 1em; }
   .card .title {
     font-size: 1em;
     margin-bottom: 0;
-    font-weight: 100; }
+    font-weight: 100;
+    position: relative;
+    z-index: 2; }
   .card .sub-types {
     margin-bottom: 1em;
-    font-size: .675em; }
+    font-size: .6em;
+    position: relative;
+    z-index: 2; }
     .card .sub-types:before, .card .sub-types:after {
       display: inline;
       content: '-'; }
   .card .image {
     position: relative;
-    background-color: rgba(109, 109, 109, 0.52);
-    margin-bottom: 1em; }
+    margin-bottom: 1em;
+    position: relative;
+    z-index: 1; }
     .card .image:before {
       display: block;
       content: "";
@@ -79,22 +91,38 @@ h1, h2, h3, h4, h5, h6 {
       right: 0;
       bottom: 0; }
   .card .flavor-text {
-    font-size: .675em;
+    font-size: .6em;
     font-style: italic;
-    margin-bottom: 1em; }
+    margin-bottom: 1em;
+    position: relative;
+    z-index: 2;
+    padding: 0 2em; }
   .card .description {
-    font-size: .675em;
+    font-size: .6em;
     padding-left: 1em;
-    padding-right: 1em; }
+    padding-right: 1em;
+    position: relative;
+    z-index: 2; }
     .card .description br {
       content: "-" !important;
       display: block !important;
       margin-bottom: 1em !important; }
+    .card .description table {
+      text-align: left;
+      border-collapse: collapse; }
+      .card .description table tr:nth-of-type(even) {
+        background: rgba(0, 0, 0, 0.05); }
+      .card .description table td {
+        padding: .25em;
+        vertical-align: top; }
+        .card .description table td:first-child {
+          width: 3em; }
   .card.fighting_arts {
     background: #e5e5e5; }
     .card.fighting_arts .image {
       margin-left: -1em;
-      margin-right: -1em; }
+      margin-right: -1em;
+      background-color: rgba(0, 0, 0, 0.25); }
   .card.resources {
     background: #d3d5ae; }
     .card.resources:before {
@@ -118,6 +146,15 @@ h1, h2, h3, h4, h5, h6 {
   .card.disorders {
     color: white;
     background: #212121; }
+    .card.disorders:before {
+      display: none; }
+    .card.disorders > .wrapper {
+      background: url("images/disorder-2.jpg") no-repeat top center;
+      background-size: contain; }
+    .card.disorders .sub-types {
+      opacity: 0; }
+    .card.disorders .image {
+      margin-bottom: 0; }
     .card.disorders:before {
       content: '';
       position: absolute;
