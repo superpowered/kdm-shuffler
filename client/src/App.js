@@ -333,6 +333,9 @@ class App extends Component
                     </h1>
                     <input className="card-filter-input" type="search" onChange={this.handleChange} value={this.state.card_filter}/>
                     {expansionToggles}
+                    {
+                        //TODO: Toggle for sorting
+                    }
                 </header>
                 <main className="app-body">
                     <div className="card-holder">

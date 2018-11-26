@@ -24,9 +24,14 @@ export default class Card extends Component
                     </h4>
                     <div className="sub-types">
                         {card.sub_type_pretty}
+                        {
+                            //TODO: resources show sub types
+                        }
                     </div>
                     <div className="image">
-
+                        {
+                            //TODO: make a directory lookup or show placeholder
+                        }
                     </div>
                     <div className="flavor-text">
                         {card.flavor_text}
