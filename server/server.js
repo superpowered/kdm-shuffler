@@ -44,7 +44,6 @@ app.get('/api/expansions', (req, res) =>
                     let expansion = response.data[item];
                     expansion.key = item;
                     expansion.title = expansion.name;
-                    expansion.name = expansion.handle;
                     expansion.decks_needed =
                     [
                         {

@@ -47,7 +47,6 @@ class App extends Component
                         sub_type_name: 'secret_fighting_art',
                     }
                 ]
-
             },
             {
                 title: 'Resources',
@@ -134,9 +133,7 @@ class App extends Component
 
     handleNameFilterChange = (e) =>
     {
-        this.setState({
-            name_filter: e.target.value
-        });
+        this.setState({name_filter: e.target.value});
     };
 
     filterCardsByExpansion(cards, expansions)
