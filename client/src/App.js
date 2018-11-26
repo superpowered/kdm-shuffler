@@ -18,7 +18,7 @@ class App extends Component
             card_filter: '',
             card_types:
             {
-                //TODO: can we move away from hard coded card types?
+                //TODO: organization: can we move away from hard coded card types?
                 /*
                     card_types:
                     [
@@ -62,7 +62,7 @@ class App extends Component
         let cardTypes = {...this.state.card_types};
         let expansions = [
         {
-            //TODO: move core into server response
+            //TODO: organization: move core into server response
             title: 'Core',
             name: 'core',
             decks_needed:
@@ -95,7 +95,7 @@ class App extends Component
                 APIService.getCards(theseCards.name, ignoreCache)
                     .then( ResponseCards =>
                     {
-                        //TODO: Have server insert card copies
+                        //TODO: feature: Have server insert card copies
                         cardTypes[cardType].cards = ResponseCards;
                         resolve();
                     })
@@ -109,7 +109,7 @@ class App extends Component
             APIService.getExpansions(ignoreCache)
                 .then( responseExpansions =>
                 {
-                    //TODO: move all this formatting to server
+                    //TODO: organization: move all this formatting to server
                     for(let x = 0; x < responseExpansions.length; x++)
                     {
                         const expansion = responseExpansions[x];
@@ -143,7 +143,7 @@ class App extends Component
                     active_expansions: activeExpansions,
                 }, () =>
                 {
-                    //TODO: this feels very incorrect
+                    //TODO: bug: this feels very incorrect
                     const decks = this.buildDecks(activeExpansions);
                     this.setState(
                     {
@@ -207,7 +207,7 @@ class App extends Component
     {
         let decks = [];
 
-        //TODO: DRY
+        //TODO: organization: DRY
 
         //1. build disorder deck
         decks.push({
@@ -241,7 +241,15 @@ class App extends Component
             cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, expansions), 'basic_resources')
         });
 
-        //5. Expansion extra decks
+        //5. build strange resource deck
+        decks.push({
+            title: 'Strange Resources',
+            type: 'strange_resources',
+            name: 'strange_resources',
+            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, expansions), 'strange_resources')
+        });
+
+        //6. Expansion extra decks
         for(let x = 0; x < expansions.length; x++)
         {
             if(!expansions[x].decks_needed)
@@ -257,7 +265,7 @@ class App extends Component
             }
         }
 
-        //TODO: varying card amounts for resource decks
+        //TODO: feature: varying card amounts for resource decks
         return decks;
     };
 
@@ -279,7 +287,7 @@ class App extends Component
     render()
     {
 
-        //TODO: make deck component
+        //TODO: organization: make deck component
         let cardList = [];
         for(let x = 0; x < this.state.decks.length; x++)
         {
@@ -308,7 +316,7 @@ class App extends Component
         if(!cardList.length)
             cardList = 'No cards found';
 
-        //TODO: component
+        //TODO: organization: component
         let expansionToggles = [];
         const expansions = this.state.expansions;
         for(let x = 0; x < expansions.length; x++)
@@ -334,7 +342,10 @@ class App extends Component
                     <input className="card-filter-input" type="search" onChange={this.handleChange} value={this.state.card_filter}/>
                     {expansionToggles}
                     {
-                        //TODO: Toggle for sorting
+                        //TODO: feature: save expansions chosen in a cookie
+                    }
+                    {
+                        //TODO: feature: Toggle for sorting
                     }
                 </header>
                 <main className="app-body">
