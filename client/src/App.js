@@ -83,36 +83,12 @@ class App extends Component
     componentDidMount()
     {
         const ignoreCache = false;
-
-        //Get all cards on app init
         const cardTypes = this.card_types;
-        let expansions = [
-        {
-            //TODO: organization: move core into server response
-            title: 'Core',
-            name: 'core',
-            decks_needed:
-            [
-                {
-                    title: 'White Lion Resources',
-                    name: 'white_lion_resources',
-                    type: 'resources'
-                },
-                {
-                    title: 'Screaming Antelope Resources',
-                    name: 'screaming_antelope_resources',
-                    type: 'resources'
-                },
-                {
-                    title: 'Phoenix Resources',
-                    name: 'phoenix_resources',
-                    type: 'resources'
-                }
-            ]
-        }];
+        let expansions = [];
+        let cards = [];
         let promises = [];
 
-        let cards = [];
+        //Get Cards
         for(let x = 0; x < cardTypes.length; x++)
         {
             const cardType = cardTypes[x];
@@ -121,7 +97,6 @@ class App extends Component
                 APIService.getCards(cardType.name_singular, ignoreCache)
                     .then( response =>
                     {
-                        //TODO: feature: Have server insert card copies
                         cards.push.apply(cards, response);
                         resolve();
                     })
@@ -130,35 +105,20 @@ class App extends Component
             promises.push(promise);
         }
 
+        //Get Expansions
         let promise = new Promise((resolve, reject) =>
         {
             APIService.getExpansions(ignoreCache)
                 .then( responseExpansions =>
                 {
-                    //TODO: organization: move all this formatting to server
-                    for(let x = 0; x < responseExpansions.length; x++)
-                    {
-                        const expansion = responseExpansions[x];
-                        expansions.push(
-                        {
-                            title: expansion.name,
-                            name: expansion.handle,
-                            decks_needed:
-                            [
-                                {
-                                    title: expansion.name + ' Resources',
-                                    name: expansion.handle + '_resources',
-                                    type: 'resources'
-                                }
-                            ]
-                        });
-                    }
+                    expansions = responseExpansions;
                     resolve();
                 })
                 .catch((err) => reject(err));
         });
         promises.push(promise);
 
+        //Build Decks and set state
         Promise.all(promises)
             .then(() =>
             {
@@ -166,7 +126,6 @@ class App extends Component
                 this.setState(
                 {
                     cards: cards,
-                    //card_types: cardTypes,
                     expansions: expansions,
                     decks: decks
                 });
@@ -182,13 +141,21 @@ class App extends Component
 
     nameFilter = (card, filter) =>
     {
-        const propertiesToCheck = ['name', 'selector_text', 'sub_type_pretty', 'type_pretty', 'desc', 'flavor_text'];
+        const propertiesToCheck = ['name', 'selector_text', 'sub_type_pretty', 'type_pretty', 'desc', 'flavor_text', 'expansion', 'keywords'];
 
         //name filter
         for(let x = 0; x < propertiesToCheck.length; x++)
         {
             const property = propertiesToCheck[x];
-            if(card[property] && card[property].toLowerCase().indexOf(filter) !== -1)
+            if(card[property] && Array.isArray(card[property]))
+            {
+                for(let y = 0; y < card[property].length; y++)
+                {
+                    if(card[property][y].toLowerCase().indexOf(filter) !== -1)
+                        return true;
+                }
+            }
+            else if(card[property] && card[property].toLowerCase().indexOf(filter) !== -1)
                 return true;
         }
 
@@ -363,7 +330,6 @@ class App extends Component
 
     render()
     {
-
         //TODO: organization: make deck component
         let cardList = [];
         for(let x = 0; x < this.state.decks.length; x++)
