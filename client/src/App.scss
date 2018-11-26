@@ -1,6 +1,42 @@
 $font_1: 'Open Sans', sans-serif;
 $font_2: 'Libre Baskerville', serif;
 
+$icon_font_1: 'kdm-font-1';
+$icon_font_2: 'kdm-font-2';
+
+/*@font-face
+{
+    font-family: 'Font Name';
+
+    src: url('fonts/FONT/FILE.woff2') format('woff2'),
+    url('fonts/FONT/FILE.woff') format('woff'),
+    url('fonts/FONT/FILE.ttf') format('truetype');
+
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}*/
+
+@font-face
+{
+    font-family: 'kdm-font-1';
+
+    src: url('fonts/kdm-font-10.ttf') format('truetype');
+
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face
+{
+    font-family: 'kdm-font-2';
+
+    src: url('fonts/kdm-font-2.ttf') format('truetype');
+
+    font-weight: 400;
+    font-style: normal;
+}
+
 //TODO: normalize
 //TODO: break into smaller files
 *

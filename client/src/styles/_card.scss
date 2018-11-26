@@ -92,6 +92,26 @@
             }
         }
 
+        font
+        {
+            font-family: $icon_font_2;
+        }
+        .kd_blue_font
+        {
+            font-family: $font_1;
+            color: blue;
+        }
+        .kd_pink_font
+        {
+            font-family: $font_1;
+            color: red;
+        }
+        .kdm_font
+        {
+            font-family: $icon_font_1;
+            vertical-align: middle;
+        }
+
         //TODO: need to make custom font for special icons
     }
 
