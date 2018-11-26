@@ -17,7 +17,7 @@ class App extends Component
         {
             card_filter: '',
             expansion_filters: ['core'],
-            card_type_filters: [],
+            card_type_filters: ['disorders','fighting_art','secret_fighting_art','basic_resources','strange_resources','monster_resources','vermin'],
             card_types:
             {
                 //TODO: organization: can we move away from hard coded card types?
@@ -86,7 +86,6 @@ class App extends Component
             ]
         }];
         let promises = [];
-        const activeExpansions = expansions.map(a => ({...a}));
 
         for(let cardType in cardTypes)
         {
@@ -184,12 +183,42 @@ class App extends Component
         return false;
     };
 
+    cardTypeFilter = (card, cardTypes) =>
+    {
+        //toggle filters
+        for(let x = 0; x < cardTypes.length; x++)
+        {
+            const cardType = cardTypes[x];
+
+            //monster resources aren't really defined in API
+            if(
+                cardType === 'monster_resources'
+                && card.type === 'resources'
+                && !['vermin','basic_resources','strange_resources'].includes(card.sub_type)
+            )
+            {
+                return true;
+            }
+
+            if(card.sub_type === cardType || card.type === cardType)
+                return true;
+        }
+
+        return false;
+    };
+
     cardFilter = (cards) =>
     {
         const nameFilter = this.state.card_filter.toLowerCase().trim();
         const expansionFilters = this.state.expansion_filters;
+        const cardTypeFilters = this.state.card_type_filters;
 
-        return cards.filter((card) => this.nameFilter(card, nameFilter) && this.expansionFilter(card, expansionFilters));
+        return cards.filter((card) =>
+        {
+            return this.nameFilter(card, nameFilter)
+                && this.expansionFilter(card, expansionFilters)
+                && this.cardTypeFilter(card, cardTypeFilters);
+        });
     };
 
     handleExpansionFilterChange = (event) =>
@@ -208,6 +237,24 @@ class App extends Component
         this.setState(
         {
             expansion_filters: expansionFilters
+        });
+    };
+    handleCardTypeFilterChange = (event) =>
+    {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        const cardTypeFilters = this.state.card_type_filters;
+
+        //add / remove filter
+        if(value && !cardTypeFilters.includes(name))
+            cardTypeFilters.push(name);
+        else if(!value && cardTypeFilters.includes(name))
+            cardTypeFilters.splice(cardTypeFilters.indexOf(name), 1);
+
+        this.setState(
+        {
+            card_type_filters: cardTypeFilters
         });
     };
 
@@ -276,7 +323,7 @@ class App extends Component
                     title: expansions[x].decks_needed[y].title,
                     type: expansions[x].decks_needed[y].type,
                     name: expansions[x].decks_needed[y].name,
-                    cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types[expansions[x].decks_needed[y].type].cards, this.state.expansions), expansions[x].decks_needed[y].name)
+                    cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types[expansions[x].decks_needed[y].type].cards, expansions), expansions[x].decks_needed[y].name)
                 });
             }
         }
@@ -355,11 +402,11 @@ class App extends Component
                 title: 'Disorders'
             },
             {
-                name: 'fighting_arts',
+                name: 'fighting_art',
                 title: 'Fighting Arts'
             },
             {
-                name: 'secret_fighting_arts',
+                name: 'secret_fighting_art',
                 title: 'Secret Fighting Arts'
             },
             {
@@ -385,9 +432,9 @@ class App extends Component
                 <div className="card-type-toggle" key={x}>
                     <label>{cardTypes[x].title}</label>
                     <input type="checkbox"
-                           onChange={this.handleExpansionFilterChange}
+                           onChange={this.handleCardTypeFilterChange}
                            name={cardTypes[x].name}
-                           checked="checked"
+                           checked={this.state.card_type_filters.includes(cardTypes[x].name) ? 'checked' : ''}
                     />
                 </div>
             ));
