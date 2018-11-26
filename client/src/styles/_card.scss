@@ -32,12 +32,6 @@
         font-size: .6em;
         position: relative;
         z-index: 2;
-        &:before,
-        &:after
-        {
-            display: inline;
-            content: '-';
-        }
     }
 
     .image

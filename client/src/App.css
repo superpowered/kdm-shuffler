@@ -93,9 +93,6 @@ h1, h2, h3, h4, h5, h6 {
     font-size: .6em;
     position: relative;
     z-index: 2; }
-    .card .sub-types:before, .card .sub-types:after {
-      display: inline;
-      content: '-'; }
   .card .image {
     position: relative;
     margin-bottom: 1em;
