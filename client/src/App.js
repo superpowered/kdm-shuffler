@@ -15,7 +15,7 @@ class App extends Component
         super(props);
         this.state =
         {
-            card_filter: '',
+            name_filter: '',
             expansion_filters: ['core'],
             card_type_filters: ['disorders','fighting_art','secret_fighting_art','basic_resources','strange_resources','monster_resources','vermin'],
             cards: [],
@@ -173,10 +173,10 @@ class App extends Component
             });
     }
 
-    handleChange = (e) =>
+    handleNameFilterChange = (e) =>
     {
         this.setState({
-            card_filter: e.target.value
+            name_filter: e.target.value
         });
     };
 
@@ -234,68 +234,13 @@ class App extends Component
         return false;
     };
 
-    cardFilter = (cards) =>
-    {
-        const nameFilter = this.state.card_filter.toLowerCase().trim();
-        const expansionFilters = this.state.expansion_filters;
-        const cardTypeFilters = this.state.card_type_filters;
-
-        return cards.filter((card) =>
-        {
-            return this.nameFilter(card, nameFilter)
-                && this.expansionFilter(card, expansionFilters)
-                && this.cardTypeFilter(card, cardTypeFilters);
-        });
-    };
-
-    handleExpansionFilterChange = (event) =>
-    {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        const expansionFilters = this.state.expansion_filters;
-
-        //add / remove filter
-        if(value && !expansionFilters.includes(name))
-            expansionFilters.push(name);
-        else if(!value && expansionFilters.includes(name))
-            expansionFilters.splice(expansionFilters.indexOf(name), 1);
-
-        this.setState(
-        {
-            expansion_filters: expansionFilters
-        });
-    };
-    handleCardTypeFilterChange = (event) =>
-    {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        const cardTypeFilters = this.state.card_type_filters;
-
-        //add / remove filter
-        if(value && !cardTypeFilters.includes(name))
-            cardTypeFilters.push(name);
-        else if(!value && cardTypeFilters.includes(name))
-            cardTypeFilters.splice(cardTypeFilters.indexOf(name), 1);
-
-        this.setState(
-        {
-            card_type_filters: cardTypeFilters
-        });
-    };
-
-    buildDecksByType(cards, type)
-    {
-
-    }
-
     buildDecks = (cards, expansions) =>
     {
         let decks = [];
 
         cards = this.filterCardsByExpansion(cards, expansions);
 
+        //1. Deck Types
         const cardTypes = this.card_types;
         for(let x = 0; x < cardTypes.length; x++)
         {
@@ -323,10 +268,9 @@ class App extends Component
                     });
                 }
             }
-
         }
 
-        //6. Monster Resource Decks
+        //2. Monster Resource Decks
         for(let x = 0; x < expansions.length; x++)
         {
             if(!expansions[x].decks_needed)
@@ -344,6 +288,58 @@ class App extends Component
 
         //TODO: feature: varying card amounts for resource decks
         return decks;
+    };
+
+    handleExpansionFilterChange = (event) =>
+    {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        const expansionFilters = this.state.expansion_filters;
+
+        //add / remove filter
+        if(value && !expansionFilters.includes(name))
+            expansionFilters.push(name);
+        else if(!value && expansionFilters.includes(name))
+            expansionFilters.splice(expansionFilters.indexOf(name), 1);
+
+        this.setState(
+            {
+                expansion_filters: expansionFilters
+            });
+    };
+
+    handleCardTypeFilterChange = (event) =>
+    {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        const cardTypeFilters = this.state.card_type_filters;
+
+        //add / remove filter
+        if(value && !cardTypeFilters.includes(name))
+            cardTypeFilters.push(name);
+        else if(!value && cardTypeFilters.includes(name))
+            cardTypeFilters.splice(cardTypeFilters.indexOf(name), 1);
+
+        this.setState(
+            {
+                card_type_filters: cardTypeFilters
+            });
+    };
+
+    cardFilter = (cards) =>
+    {
+        const nameFilter = this.state.name_filter.toLowerCase().trim();
+        const expansionFilters = this.state.expansion_filters;
+        const cardTypeFilters = this.state.card_type_filters;
+
+        return cards.filter((card) =>
+        {
+            return this.nameFilter(card, nameFilter)
+                && this.expansionFilter(card, expansionFilters)
+                && this.cardTypeFilter(card, cardTypeFilters);
+        });
     };
 
     filterCardsByExpansion(cards, expansions)
@@ -459,7 +455,7 @@ class App extends Component
                     <h1 className="page-title">
                         Kingdom Death Cards
                     </h1>
-                    <input className="card-filter-input" type="search" onChange={this.handleChange} value={this.state.card_filter} placeholder="Search..."/>
+                    <input className="card-filter-input" type="search" onChange={this.handleNameFilterChange} value={this.state.name_filter} placeholder="Search..."/>
                     <div><strong>Expansions:</strong></div>
                     {expansionToggles}
                     {
