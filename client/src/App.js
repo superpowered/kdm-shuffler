@@ -16,6 +16,8 @@ class App extends Component
         this.state =
         {
             card_filter: '',
+            expansion_filters: ['core'],
+            card_type_filters: [],
             card_types:
             {
                 //TODO: organization: can we move away from hard coded card types?
@@ -48,7 +50,6 @@ class App extends Component
                 }
             },
             decks: [],
-            active_expansions: [],
             expansions: []
 
         };
@@ -136,19 +137,12 @@ class App extends Component
         Promise.all(promises)
             .then(() =>
             {
+                const decks = this.buildDecks(expansions);
                 this.setState(
                 {
                     card_types: cardTypes,
                     expansions: expansions,
-                    active_expansions: activeExpansions,
-                }, () =>
-                {
-                    //TODO: bug: this feels very incorrect
-                    const decks = this.buildDecks(activeExpansions);
-                    this.setState(
-                    {
-                        decks: decks
-                    });
+                    decks: decks
                 });
             });
     }
@@ -160,46 +154,60 @@ class App extends Component
         });
     };
 
-    cardFilter = (cards) =>
+    nameFilter = (card, filter) =>
     {
-        const filter = this.state.card_filter.toLowerCase().trim();
-        return cards.filter((card) =>
+        const propertiesToCheck = ['name', 'selector_text', 'sub_type_pretty', 'type_pretty', 'desc', 'flavor_text'];
+
+        //name filter
+        for(let x = 0; x < propertiesToCheck.length; x++)
         {
-            let show = false;
+            const property = propertiesToCheck[x];
+            if(card[property] && card[property].toLowerCase().indexOf(filter) !== -1)
+                return true;
+        }
 
-            const propertiesToCheck = ['name', 'selector_text', 'sub_type_pretty', 'type_pretty', 'desc', 'flavor_text']
-
-            for(let x = 0; x < propertiesToCheck.length; x++)
-            {
-                const property = propertiesToCheck[x];
-                if(card[property] && card[property].toLowerCase().indexOf(filter) !== -1)
-                    show = true;
-            }
-
-            return show;
-        });
+        return false;
     };
 
-    handleExpansionChange = (event) =>
+    expansionFilter = (card, expansions) =>
+    {
+        const hasCore = expansions.includes('core');
+
+        //toggle filters
+        for(let x = 0; x < expansions.length; x++)
+        {
+            const expansion = expansions[x];
+            if((hasCore && !card.expansion) || card.expansion === expansion)
+                return true;
+        }
+
+        return false;
+    };
+
+    cardFilter = (cards) =>
+    {
+        const nameFilter = this.state.card_filter.toLowerCase().trim();
+        const expansionFilters = this.state.expansion_filters;
+
+        return cards.filter((card) => this.nameFilter(card, nameFilter) && this.expansionFilter(card, expansionFilters));
+    };
+
+    handleExpansionFilterChange = (event) =>
     {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name; //gorm
+        const name = target.name;
+        const expansionFilters = this.state.expansion_filters;
 
-        const activeExpansions = this.state.active_expansions.map(a => ({...a}));
-        const inExpansions = activeExpansions.find(expansion => expansion.name === name);
-
-        if(value && !inExpansions)
-            activeExpansions.push(this.state.expansions.find(expansion => expansion.name === name));
-        else if(!value && inExpansions)
-            activeExpansions.splice(activeExpansions.indexOf(inExpansions), 1);
-
-        const decks = this.buildDecks(activeExpansions);
+        //add / remove filter
+        if(value && !expansionFilters.includes(name))
+            expansionFilters.push(name);
+        else if(!value && expansionFilters.includes(name))
+            expansionFilters.splice(expansionFilters.indexOf(name), 1);
 
         this.setState(
         {
-            active_expansions: activeExpansions,
-            decks: decks
+            expansion_filters: expansionFilters
         });
     };
 
@@ -284,7 +292,6 @@ class App extends Component
             return cards.filter((card) => !card.expansion || expansions.filter((expansion) => expansion.name === card.expansion).length);
         else
             return cards.filter((card) => expansions.filter((expansion) => expansion.name === card.expansion).length);
-
     }
 
     filterCardsBySubType(cards, type)
@@ -322,7 +329,7 @@ class App extends Component
             ));
         }
         if(!cardList.length)
-            cardList = 'No cards found';
+            cardList = (<div className="no-cards-found">-No cards found-</div>);
 
         //TODO: organization: component
         let expansionToggles = [];
@@ -333,9 +340,54 @@ class App extends Component
                 <div className="expansion-toggle" key={x}>
                     <label>{expansions[x].title}</label>
                     <input type="checkbox"
-                           onChange={this.handleExpansionChange}
+                           onChange={this.handleExpansionFilterChange}
                            name={expansions[x].name}
-                           checked={this.state.active_expansions.find(expansion => expansion.name === expansions[x].name) ? 'checked' : ''}
+                           checked={this.state.expansion_filters.includes(expansions[x].name) ? 'checked' : ''}
+                    />
+                </div>
+            ));
+        }
+
+        let cardTypeToggles =[];
+        let cardTypes = [
+            {
+                name: 'disorders',
+                title: 'Disorders'
+            },
+            {
+                name: 'fighting_arts',
+                title: 'Fighting Arts'
+            },
+            {
+                name: 'secret_fighting_arts',
+                title: 'Secret Fighting Arts'
+            },
+            {
+                name: 'basic_resources',
+                title: 'Basic Resources'
+            },
+            {
+                name: 'strange_resources',
+                title: 'Strange Resources'
+            },
+            {
+                name: 'monster_resources',
+                title: 'Monster Resources'
+            },
+            {
+                name: 'vermin',
+                title: 'Vermin'
+            }
+        ];
+        for(let x = 0; x < cardTypes.length; x++)
+        {
+            cardTypeToggles.push((
+                <div className="card-type-toggle" key={x}>
+                    <label>{cardTypes[x].title}</label>
+                    <input type="checkbox"
+                           onChange={this.handleExpansionFilterChange}
+                           name={cardTypes[x].name}
+                           checked="checked"
                     />
                 </div>
             ));
@@ -354,6 +406,7 @@ class App extends Component
                     }
                     {
                         //TODO: feature: Toggle for sorting
+                        cardTypeToggles
                     }
                 </header>
                 <main className="app-body">

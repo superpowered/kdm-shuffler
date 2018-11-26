@@ -109,6 +109,13 @@ h1,h2,h3,h4,h5,h6
     }
 }
 
+.no-cards-found
+{
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    padding: 1em;
+}
 .card-list
 {
     display: flex;

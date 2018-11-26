@@ -55,6 +55,12 @@ h1, h2, h3, h4, h5, h6 {
   .expansion-toggle label {
     margin-right: .5em; }
 
+.no-cards-found {
+  text-align: center;
+  font-size: 3em;
+  font-weight: bold;
+  padding: 1em; }
+
 .card-list {
   display: flex;
   flex-wrap: wrap;
@@ -184,7 +190,7 @@ h1, h2, h3, h4, h5, h6 {
     .card.disorders .sub-types {
       opacity: 0; }
     .card.disorders .image {
-      margin-bottom: 0; }
+      margin-bottom: .5em; }
     .card.disorders:before {
       content: '';
       position: absolute;
