@@ -18,6 +18,16 @@ class App extends Component
             card_filter: '',
             card_types:
             {
+                //TODO: can we move away from hard coded card types?
+                /*
+                    card_types:
+                    [
+                        title: 'Fighting Arts',
+                        name: 'fighting_art',
+                        type: 'fighting_arts'
+                        cards: [],
+                    ]
+                */
                 fighting_arts:
                 {
                     title: 'Fighting Arts',
@@ -46,10 +56,13 @@ class App extends Component
 
     componentDidMount()
     {
+        const ignoreCache = false;
+
         //Get all cards on app init
         let cardTypes = {...this.state.card_types};
         let expansions = [
         {
+            //TODO: move core into server response
             title: 'Core',
             name: 'core',
             decks_needed:
@@ -79,9 +92,10 @@ class App extends Component
             const theseCards = cardTypes[cardType];
             let promise = new Promise((resolve, reject) =>
             {
-                APIService.getCards(theseCards.name, true)
+                APIService.getCards(theseCards.name, ignoreCache)
                     .then( ResponseCards =>
                     {
+                        //TODO: Have server insert card copies
                         cardTypes[cardType].cards = ResponseCards;
                         resolve();
                     })
@@ -92,9 +106,10 @@ class App extends Component
 
         let promise = new Promise((resolve, reject) =>
         {
-            APIService.getExpansions(true)
+            APIService.getExpansions(ignoreCache)
                 .then( responseExpansions =>
                 {
+                    //TODO: move all this formatting to server
                     for(let x = 0; x < responseExpansions.length; x++)
                     {
                         const expansion = responseExpansions[x];
@@ -138,18 +153,11 @@ class App extends Component
             });
     }
 
-    filterResults = (filter) =>
-    {
-
-    };
-
     handleChange = (e) =>
     {
         this.setState({
             card_filter: e.target.value
         });
-
-        this.filterResults(e.target.value);
     };
 
     cardFilter = (cards) =>
@@ -199,6 +207,8 @@ class App extends Component
     {
         let decks = [];
 
+        //TODO: DRY
+
         //1. build disorder deck
         decks.push({
             title: 'Disorders',
@@ -247,9 +257,7 @@ class App extends Component
             }
         }
 
-        //TODO: varying amounts for resource decks
-
-        console.log(expansions, decks);
+        //TODO: varying card amounts for resource decks
         return decks;
     };
 
@@ -271,6 +279,7 @@ class App extends Component
     render()
     {
 
+        //TODO: make deck component
         let cardList = [];
         for(let x = 0; x < this.state.decks.length; x++)
         {
@@ -296,10 +305,10 @@ class App extends Component
                 </div>
             ));
         }
-
         if(!cardList.length)
             cardList = 'No cards found';
 
+        //TODO: component
         let expansionToggles = [];
         const expansions = this.state.expansions;
         for(let x = 0; x < expansions.length; x++)
