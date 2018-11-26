@@ -446,11 +446,14 @@ class App extends Component
                     <h1 className="page-title">
                         Kingdom Death Cards
                     </h1>
-                    <input className="card-filter-input" type="search" onChange={this.handleChange} value={this.state.card_filter}/>
+                    <input className="card-filter-input" type="search" onChange={this.handleChange} value={this.state.card_filter} placeholder="Search..."/>
+                    <div><strong>Expansions:</strong></div>
                     {expansionToggles}
                     {
                         //TODO: feature: save expansions chosen in a cookie
                     }
+                    <hr />
+                    <div><strong>Card Types:</strong></div>
                     {
                         //TODO: feature: Toggle for sorting
                         cardTypeToggles

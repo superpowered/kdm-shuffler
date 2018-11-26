@@ -46,13 +46,20 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto 1em;
   max-width: 30em;
   width: 100%;
-  font-size: 1em; }
+  font-size: 1em;
+  padding: .5em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none; }
 
-.expansion-toggle {
+.expansion-toggle,
+.card-type-toggle {
   display: inline-block;
   margin-right: 1em;
   margin-bottom: .5em; }
-  .expansion-toggle label {
+  .expansion-toggle label,
+  .card-type-toggle label {
     margin-right: .5em; }
 
 .no-cards-found {

@@ -92,9 +92,15 @@ h1,h2,h3,h4,h5,h6
     max-width: 30em;
     width: 100%;
     font-size: 1em;
+    padding: .5em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
 }
 
-.expansion-toggle
+.expansion-toggle,
+.card-type-toggle
 {
     display: inline-block;
     margin-right: 1em;
