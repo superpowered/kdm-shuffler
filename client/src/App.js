@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import APIService from './services/APIService';
 
 //Components
-import Card from './components/Card';
+import FilterableCardLists from './components/FilterableCardLists';
 
 import './App.css';
 
@@ -139,67 +139,24 @@ class App extends Component
         });
     };
 
-    nameFilter = (card, filter) =>
+    filterCardsByExpansion(cards, expansions)
     {
-        const propertiesToCheck = ['name', 'selector_text', 'sub_type_pretty', 'type_pretty', 'desc', 'flavor_text', 'expansion', 'keywords'];
+        const hasCore = expansions.filter((expansion) => expansion.name === 'core').length;
+        if(hasCore)
+            return cards.filter((card) => !card.expansion || expansions.filter((expansion) => expansion.name === card.expansion).length);
+        else
+            return cards.filter((card) => expansions.filter((expansion) => expansion.name === card.expansion).length);
+    }
 
-        //name filter
-        for(let x = 0; x < propertiesToCheck.length; x++)
-        {
-            const property = propertiesToCheck[x];
-            if(card[property] && Array.isArray(card[property]))
-            {
-                for(let y = 0; y < card[property].length; y++)
-                {
-                    if(card[property][y].toLowerCase().indexOf(filter) !== -1)
-                        return true;
-                }
-            }
-            else if(card[property] && card[property].toLowerCase().indexOf(filter) !== -1)
-                return true;
-        }
-
-        return false;
-    };
-
-    expansionFilter = (card, expansions) =>
+    filterCardsByType(cards, type)
     {
-        const hasCore = expansions.includes('core');
+        return cards.filter((card) => card.type && type === card.type);
+    }
 
-        //toggle filters
-        for(let x = 0; x < expansions.length; x++)
-        {
-            const expansion = expansions[x];
-            if((hasCore && !card.expansion) || card.expansion === expansion)
-                return true;
-        }
-
-        return false;
-    };
-
-    cardTypeFilter = (card, cardTypes) =>
+    filterCardsBySubType(cards, subType)
     {
-        //toggle filters
-        for(let x = 0; x < cardTypes.length; x++)
-        {
-            const cardType = cardTypes[x];
-
-            //monster resources aren't really defined in API
-            if(
-                cardType === 'monster_resources'
-                && card.type === 'resources'
-                && !['vermin','basic_resources','strange_resources'].includes(card.sub_type)
-            )
-            {
-                return true;
-            }
-
-            if(card.sub_type === cardType || card.type === cardType)
-                return true;
-        }
-
-        return false;
-    };
+        return cards.filter((card) => card.sub_type && subType === card.sub_type);
+    }
 
     buildDecks = (cards, expansions) =>
     {
@@ -295,69 +252,8 @@ class App extends Component
             });
     };
 
-    cardFilter = (cards) =>
-    {
-        const nameFilter = this.state.name_filter.toLowerCase().trim();
-        const expansionFilters = this.state.expansion_filters;
-        const cardTypeFilters = this.state.card_type_filters;
-
-        return cards.filter((card) =>
-        {
-            return this.nameFilter(card, nameFilter)
-                && this.expansionFilter(card, expansionFilters)
-                && this.cardTypeFilter(card, cardTypeFilters);
-        });
-    };
-
-    filterCardsByExpansion(cards, expansions)
-    {
-        const hasCore = expansions.filter((expansion) => expansion.name === 'core').length;
-        if(hasCore)
-            return cards.filter((card) => !card.expansion || expansions.filter((expansion) => expansion.name === card.expansion).length);
-        else
-            return cards.filter((card) => expansions.filter((expansion) => expansion.name === card.expansion).length);
-    }
-
-    filterCardsByType(cards, type)
-    {
-        return cards.filter((card) => card.type && type === card.type);
-    }
-
-    filterCardsBySubType(cards, subType)
-    {
-        return cards.filter((card) => card.sub_type && subType === card.sub_type);
-    }
-
     render()
     {
-        //TODO: organization: make deck component
-        let cardList = [];
-        for(let x = 0; x < this.state.decks.length; x++)
-        {
-            const deck = this.state.decks[x];
-            if(!deck.cards || !deck.cards.length)
-                continue;
-
-            const filteredCards = this.cardFilter(deck.cards);
-
-            if(!filteredCards.length)
-                continue;
-
-            cardList.push((
-                <div key={deck.name} className="card-list">
-                    <h3 className="list-title">
-                        {deck.title}
-                    </h3>
-                    <hr className="list-break"/>
-                    {
-                        filteredCards
-                            .map((card, index) => <Card key={index} card={card} />)
-                    }
-                </div>
-            ));
-        }
-        if(!cardList.length)
-            cardList = (<div className="no-cards-found">-No cards found-</div>);
 
         //TODO: organization: component
         let expansionToggles = [];
@@ -376,6 +272,7 @@ class App extends Component
             ));
         }
 
+        //TODO: make component
         let cardTypeToggles =[];
         const cardTypes = this.card_types;
         for(let x = 0; x < cardTypes.length; x++)
@@ -436,7 +333,12 @@ class App extends Component
                 </header>
                 <main className="app-body">
                     <div className="card-holder">
-                        {cardList}
+                        <FilterableCardLists
+                            decks={this.state.decks}
+                            name_filter={this.state.name_filter}
+                            expansion_filters={this.state.expansion_filters}
+                            card_type_filters={this.state.card_type_filters}
+                        />
                     </div>
                 </main>
             </div>
