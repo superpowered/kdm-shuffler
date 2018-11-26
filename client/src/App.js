@@ -38,13 +38,7 @@ class App extends Component
                 }
             },
             decks: [],
-            active_expansions:
-            [
-                {
-                    title: 'Core',
-                    name: 'core',
-                },
-            ],
+            active_expansions: [],
             expansions: []
 
         };
@@ -54,8 +48,31 @@ class App extends Component
     {
         //Get all cards on app init
         let cardTypes = {...this.state.card_types};
-        let expansions = [];
+        let expansions = [
+        {
+            title: 'Core',
+            name: 'core',
+            decks_needed:
+            [
+                {
+                    title: 'White Lion Resources',
+                    name: 'white_lion_resources',
+                    type: 'resources'
+                },
+                {
+                    title: 'Screaming Antelope Resources',
+                    name: 'screaming_antelope_resources',
+                    type: 'resources'
+                },
+                {
+                    title: 'Phoenix Resources',
+                    name: 'phoenix_resources',
+                    type: 'resources'
+                }
+            ]
+        }];
         let promises = [];
+        const activeExpansions = expansions.map(a => ({...a}));
 
         for(let cardType in cardTypes)
         {
@@ -73,41 +90,50 @@ class App extends Component
             promises.push(promise);
         }
 
-        promises.push(new Promise((resolve, reject) =>
+        let promise = new Promise((resolve, reject) =>
         {
-            //TODO
-            expansions =
-            [
+            APIService.getExpansions(true)
+                .then( responseExpansions =>
                 {
-                    title: 'Core',
-                    name: 'core',
-                },
-                {
-                    title: 'Gorm', //name
-                    name: 'gorm', //handle
-                    decks_needed:
-                        [
-                            {
-                                title: 'Gorm Resources', //name + Resources
-                                name: 'gorm_resources', //handle + _resources
-                                type: 'resources'
-                            }
-                        ]
-                }
-            ];
-            resolve();
-        }));
-
+                    for(let x = 0; x < responseExpansions.length; x++)
+                    {
+                        const expansion = responseExpansions[x];
+                        expansions.push(
+                        {
+                            title: expansion.name,
+                            name: expansion.handle,
+                            decks_needed:
+                            [
+                                {
+                                    title: expansion.name + ' Resources',
+                                    name: expansion.handle + '_resources',
+                                    type: 'resources'
+                                }
+                            ]
+                        });
+                    }
+                    resolve();
+                })
+                .catch((err) => reject(err));
+        });
+        promises.push(promise);
 
         Promise.all(promises)
             .then(() =>
             {
-                const decks = this.buildDecks(this.state.active_expansions);
                 this.setState(
                 {
                     card_types: cardTypes,
                     expansions: expansions,
-                    decks: decks
+                    active_expansions: activeExpansions,
+                }, () =>
+                {
+                    //TODO: this feels very incorrect
+                    const decks = this.buildDecks(activeExpansions);
+                    this.setState(
+                    {
+                        decks: decks
+                    });
                 });
             });
     }
@@ -174,10 +200,10 @@ class App extends Component
         let decks = [];
 
         //1. build disorder deck
-        console.log(this.filterCardsByExpansion(this.state.card_types.disorders.cards, expansions));
         decks.push({
             title: 'Disorders',
-            type: 'disorder',
+            type: 'disorders',
+            name: 'disorders',
             cards: this.filterCardsByExpansion(this.state.card_types.disorders.cards, expansions)
         });
 
@@ -185,6 +211,7 @@ class App extends Component
         decks.push({
             title: 'Fighting Arts',
             type: 'fighting_arts',
+            name: 'fighting_arts',
             cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.fighting_arts.cards, expansions), 'fighting_art')
         });
 
@@ -192,18 +219,19 @@ class App extends Component
         decks.push({
             title: 'Secret Fighting Arts',
             type: 'secret_fighting_arts',
+            name: 'secret_fighting_arts',
             cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.fighting_arts.cards, expansions), 'secret_fighting_art')
         });
 
-        //4. build resource decks
-        //4.1. main resources
+        //4. build resource deck
         decks.push({
             title: 'Basic Resources',
             type: 'basic_resources',
+            name: 'basic_resources',
             cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, expansions), 'basic_resources')
         });
 
-        //4.2. monster resources
+        //5. Expansion extra decks
         for(let x = 0; x < expansions.length; x++)
         {
             if(!expansions[x].decks_needed)
@@ -213,6 +241,7 @@ class App extends Component
                 decks.push({
                     title: expansions[x].decks_needed[y].title,
                     type: expansions[x].decks_needed[y].type,
+                    name: expansions[x].decks_needed[y].name,
                     cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types[expansions[x].decks_needed[y].type].cards, this.state.expansions), expansions[x].decks_needed[y].name)
                 });
             }
@@ -220,6 +249,7 @@ class App extends Component
 
         //TODO: varying amounts for resource decks
 
+        console.log(expansions, decks);
         return decks;
     };
 
@@ -254,7 +284,7 @@ class App extends Component
                 continue;
 
             cardList.push((
-                <div key={deck.type} className="card-list">
+                <div key={deck.name} className="card-list">
                     <h3 className="list-title">
                         {deck.title}
                     </h3>
@@ -275,7 +305,7 @@ class App extends Component
         for(let x = 0; x < expansions.length; x++)
         {
             expansionToggles.push((
-                <div>
+                <div className="expansion-toggle" key={x}>
                     <label>{expansions[x].title}</label>
                     <input type="checkbox"
                            onChange={this.handleExpansionChange}

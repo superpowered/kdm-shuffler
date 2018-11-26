@@ -21,6 +21,13 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   font-size: 1em; }
 
+.expansion-toggle {
+  display: inline-block;
+  margin-right: 1em;
+  margin-bottom: .5em; }
+  .expansion-toggle label {
+    margin-right: .5em; }
+
 .card-list {
   display: flex;
   flex-wrap: wrap;

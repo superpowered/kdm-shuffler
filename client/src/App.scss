@@ -49,6 +49,21 @@ h1,h2,h3,h4,h5,h6
     font-size: 1em;
 }
 
+.expansion-toggle
+{
+    display: inline-block;
+    margin-right: 1em;
+    margin-bottom: .5em;
+    label
+    {
+        margin-right: .5em;
+    }
+    input
+    {
+
+    }
+}
+
 .card-list
 {
     display: flex;
