@@ -253,32 +253,26 @@ class App extends Component
     {
 
         //TODO: organization: component
-        let expansionToggles = [];
-        const expansions = this.state.expansions;
-        for(let x = 0; x < expansions.length; x++)
+        const expansionToggles = this.state.expansions.map((expansion, index) =>
         {
-            expansionToggles.push((
-                <div className="expansion-toggle" key={x}>
-                    <label>{expansions[x].title}</label>
+            return (
+                <div className="expansion-toggle" key={index}>
+                    <label>{expansion.title}</label>
                     <input type="checkbox"
                            onChange={this.handleExpansionFilterChange}
-                           name={expansions[x].name}
-                           checked={this.state.expansion_filters.includes(expansions[x].name) ? 'checked' : ''}
+                           name={expansion.name}
+                           checked={this.state.expansion_filters.includes(expansion.name) ? 'checked' : ''}
                     />
                 </div>
-            ));
-        }
+            );
+        });
 
         //TODO: make component
-        let cardTypeToggles =[];
-        const cardTypes = this.card_types;
-        for(let x = 0; x < cardTypes.length; x++)
+        const cardTypeToggles = this.card_types.map((cardType, index) =>
         {
-            const cardType = cardTypes[x];
-            //If No sub types, just push this toggle
             if(!cardType.sub_types || !cardType.sub_types.length)
             {
-                cardTypeToggles.push((
+                return (
                     <div className="card-type-toggle" key={cardType.name}>
                         <label>{cardType.title}</label>
                         <input type="checkbox"
@@ -287,14 +281,13 @@ class App extends Component
                                checked={this.state.card_type_filters.includes(cardType.name) ? 'checked' : ''}
                         />
                     </div>
-                ));
+                );
             }
             else //If we have sub types, loop through and push those
             {
-                for(let y = 0; y < cardType.sub_types.length; y++)
+                return cardType.sub_types.map((cardSubType) =>
                 {
-                    const cardSubType = cardType.sub_types[y];
-                    cardTypeToggles.push((
+                    return (
                         <div className="card-type-toggle" key={cardSubType.sub_type_name}>
                             <label>{cardSubType.title}</label>
                             <input type="checkbox"
@@ -303,11 +296,10 @@ class App extends Component
                                    checked={this.state.card_type_filters.includes(cardSubType.sub_type_name) ? 'checked' : ''}
                             />
                         </div>
-                    ));
-                }
+                    );
+                });
             }
-
-        }
+        });
 
         return (
             <div className="app">
