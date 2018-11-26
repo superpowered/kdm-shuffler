@@ -6,8 +6,8 @@ export default class Card extends Component
     render()
     {
         const card = this.props.card;
-
         const description = card.desc ? card.desc : card.survivor_effect;
+
         let clean_desc = sanitizeHtml(description,
         {
             allowedTags: ['b', 'i', 'em', 'strong', 'a', 'td', 'tr', 'table','span', 'div','br','font'],
@@ -18,13 +18,9 @@ export default class Card extends Component
 
         let subTypes = '';
         if( card.type === 'resources')
-        {
             subTypes = card.keywords.join(', ');
-        }
         else if(card.type === 'fighting_arts')
-        {
             subTypes = '-' + card.sub_type_pretty + '-';
-        }
 
         return (
             <div className={"card " + card.type + " " + card.sub_type}>
@@ -36,15 +32,11 @@ export default class Card extends Component
                         {subTypes}
                     </div>
                     <div className="image">
-                        {
-                            //TODO: make a directory lookup or show placeholder
-                        }
                     </div>
                     <div className="flavor-text">
                         {card.flavor_text}
                     </div>
                     <div className="description" dangerouslySetInnerHTML={{__html:clean_desc }}>
-
                     </div>
                 </div>
             </div>
