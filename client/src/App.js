@@ -18,41 +18,66 @@ class App extends Component
             card_filter: '',
             expansion_filters: ['core'],
             card_type_filters: ['disorders','fighting_art','secret_fighting_art','basic_resources','strange_resources','monster_resources','vermin'],
-            card_types:
-            {
-                //TODO: organization: can we move away from hard coded card types?
-                /*
-                    card_types:
-                    [
-                        title: 'Fighting Arts',
-                        name: 'fighting_art',
-                        type: 'fighting_arts'
-                        cards: [],
-                    ]
-                */
-                fighting_arts:
-                {
-                    title: 'Fighting Arts',
-                    name: 'fighting_art',
-                    cards: [],
-                },
-                disorders:
-                {
-                    title: 'Disorders',
-                    name: 'disorder',
-                    cards: [],
-                },
-                resources:
-                {
-                    title: 'Resources',
-                    name: 'resource',
-                    cards: [],
-                }
-            },
+            cards: [],
             decks: [],
             expansions: []
-
         };
+
+        this.card_types =
+        [
+            {
+                title: 'Disorders',
+                name_singular: 'disorder',
+                name: 'disorders'
+            },
+            {
+                title: 'Fighting Arts',
+                name_singular: 'fighting_art',
+                name: 'fighting_arts',
+                sub_types:
+                [
+                    {
+                        title: 'Fighting Arts',
+                        name: 'fighting_arts',
+                        sub_type_name: 'fighting_art',
+                    },
+                    {
+                        title: 'Secret Fighting Arts',
+                        name: 'secret_fighting_arts',
+                        sub_type_name: 'secret_fighting_art',
+                    }
+                ]
+
+            },
+            {
+                title: 'Resources',
+                name_singular: 'resource',
+                name: 'resources',
+                sub_types:
+                [
+                    {
+                        title: 'Basic Resources',
+                        name: 'basic_resources',
+                        sub_type_name: 'basic_resources',
+                    },
+                    {
+                        title: 'Strange Resources',
+                        name: 'strange_resources',
+                        sub_type_name: 'strange_resources',
+                    },
+                    {
+                        title: 'Vermin',
+                        name: 'vermin',
+                        sub_type_name: 'vermin',
+                    },
+                    {
+                        title: 'Monster Resources',
+                        name: 'monster_resources',
+                        sub_type_name: 'monster_resources',
+                    }
+                ]
+            }
+        ]
     }
 
     componentDidMount()
@@ -60,7 +85,7 @@ class App extends Component
         const ignoreCache = false;
 
         //Get all cards on app init
-        let cardTypes = {...this.state.card_types};
+        const cardTypes = this.card_types;
         let expansions = [
         {
             //TODO: organization: move core into server response
@@ -87,16 +112,17 @@ class App extends Component
         }];
         let promises = [];
 
-        for(let cardType in cardTypes)
+        let cards = [];
+        for(let x = 0; x < cardTypes.length; x++)
         {
-            const theseCards = cardTypes[cardType];
+            const cardType = cardTypes[x];
             let promise = new Promise((resolve, reject) =>
             {
-                APIService.getCards(theseCards.name, ignoreCache)
-                    .then( ResponseCards =>
+                APIService.getCards(cardType.name_singular, ignoreCache)
+                    .then( response =>
                     {
                         //TODO: feature: Have server insert card copies
-                        cardTypes[cardType].cards = ResponseCards;
+                        cards.push.apply(cards, response);
                         resolve();
                     })
                     .catch((err) => reject(err));
@@ -136,10 +162,11 @@ class App extends Component
         Promise.all(promises)
             .then(() =>
             {
-                const decks = this.buildDecks(expansions);
+                const decks = this.buildDecks(cards, expansions);
                 this.setState(
                 {
-                    card_types: cardTypes,
+                    cards: cards,
+                    //card_types: cardTypes,
                     expansions: expansions,
                     decks: decks
                 });
@@ -258,61 +285,48 @@ class App extends Component
         });
     };
 
-    buildDecks = (expansions) =>
+    buildDecksByType(cards, type)
+    {
+
+    }
+
+    buildDecks = (cards, expansions) =>
     {
         let decks = [];
 
-        //TODO: organization: DRY
+        cards = this.filterCardsByExpansion(cards, expansions);
 
-        //1. build disorder deck
-        decks.push({
-            title: 'Disorders',
-            type: 'disorders',
-            name: 'disorders',
-            cards: this.filterCardsByExpansion(this.state.card_types.disorders.cards, expansions)
-        });
+        const cardTypes = this.card_types;
+        for(let x = 0; x < cardTypes.length; x++)
+        {
+            const cardType = cardTypes[x];
+            const cardTypeCards = this.filterCardsByType(cards, cardType.name);
 
-        //2. build fa deck
-        decks.push({
-            title: 'Fighting Arts',
-            type: 'fighting_arts',
-            name: 'fighting_arts',
-            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.fighting_arts.cards, expansions), 'fighting_art')
-        });
+            //If No sub types, just push this deck
+            if(!cardType.sub_types || !cardType.sub_types.length)
+            {
+                decks.push({
+                    title: cardType.title,
+                    name: cardType.name,
+                    cards: cardTypeCards
+                });
+            }
+            else //If we have sub types, loop through and push those
+            {
+                for(let y = 0; y < cardType.sub_types.length; y++)
+                {
+                    const cardSubType = cardType.sub_types[y];
+                    decks.push({
+                        title: cardSubType.title,
+                        name: cardSubType.name,
+                        cards: this.filterCardsBySubType(cardTypeCards, cardSubType.sub_type_name)
+                    });
+                }
+            }
 
-        //3. build sfa deck
-        decks.push({
-            title: 'Secret Fighting Arts',
-            type: 'secret_fighting_arts',
-            name: 'secret_fighting_arts',
-            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.fighting_arts.cards, expansions), 'secret_fighting_art')
-        });
+        }
 
-        //4. build resource deck
-        decks.push({
-            title: 'Basic Resources',
-            type: 'basic_resources',
-            name: 'basic_resources',
-            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, expansions), 'basic_resources')
-        });
-
-        //5. build strange resource deck
-        decks.push({
-            title: 'Strange Resources',
-            type: 'strange_resources',
-            name: 'strange_resources',
-            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, expansions), 'strange_resources')
-        });
-
-        //5. build vermin deck
-        decks.push({
-            title: 'Vermin',
-            type: 'vermin',
-            name: 'vermin',
-            cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types.resources.cards, expansions), 'vermin')
-        });
-
-        //6. Expansion extra decks
+        //6. Monster Resource Decks
         for(let x = 0; x < expansions.length; x++)
         {
             if(!expansions[x].decks_needed)
@@ -323,7 +337,7 @@ class App extends Component
                     title: expansions[x].decks_needed[y].title,
                     type: expansions[x].decks_needed[y].type,
                     name: expansions[x].decks_needed[y].name,
-                    cards: this.filterCardsBySubType(this.filterCardsByExpansion(this.state.card_types[expansions[x].decks_needed[y].type].cards, expansions), expansions[x].decks_needed[y].name)
+                    cards: this.filterCardsBySubType(this.filterCardsByType(cards, 'resources'), expansions[x].decks_needed[y].name)
                 });
             }
         }
@@ -341,9 +355,14 @@ class App extends Component
             return cards.filter((card) => expansions.filter((expansion) => expansion.name === card.expansion).length);
     }
 
-    filterCardsBySubType(cards, type)
+    filterCardsByType(cards, type)
     {
-        return cards.filter((card) => card.sub_type && type === card.sub_type);
+        return cards.filter((card) => card.type && type === card.type);
+    }
+
+    filterCardsBySubType(cards, subType)
+    {
+        return cards.filter((card) => card.sub_type && subType === card.sub_type);
     }
 
     render()
@@ -396,48 +415,42 @@ class App extends Component
         }
 
         let cardTypeToggles =[];
-        let cardTypes = [
-            {
-                name: 'disorders',
-                title: 'Disorders'
-            },
-            {
-                name: 'fighting_art',
-                title: 'Fighting Arts'
-            },
-            {
-                name: 'secret_fighting_art',
-                title: 'Secret Fighting Arts'
-            },
-            {
-                name: 'basic_resources',
-                title: 'Basic Resources'
-            },
-            {
-                name: 'strange_resources',
-                title: 'Strange Resources'
-            },
-            {
-                name: 'monster_resources',
-                title: 'Monster Resources'
-            },
-            {
-                name: 'vermin',
-                title: 'Vermin'
-            }
-        ];
+        const cardTypes = this.card_types;
         for(let x = 0; x < cardTypes.length; x++)
         {
-            cardTypeToggles.push((
-                <div className="card-type-toggle" key={x}>
-                    <label>{cardTypes[x].title}</label>
-                    <input type="checkbox"
-                           onChange={this.handleCardTypeFilterChange}
-                           name={cardTypes[x].name}
-                           checked={this.state.card_type_filters.includes(cardTypes[x].name) ? 'checked' : ''}
-                    />
-                </div>
-            ));
+            const cardType = cardTypes[x];
+            //If No sub types, just push this toggle
+            if(!cardType.sub_types || !cardType.sub_types.length)
+            {
+                cardTypeToggles.push((
+                    <div className="card-type-toggle" key={cardType.name}>
+                        <label>{cardType.title}</label>
+                        <input type="checkbox"
+                               onChange={this.handleCardTypeFilterChange}
+                               name={cardType.name}
+                               checked={this.state.card_type_filters.includes(cardType.name) ? 'checked' : ''}
+                        />
+                    </div>
+                ));
+            }
+            else //If we have sub types, loop through and push those
+            {
+                for(let y = 0; y < cardType.sub_types.length; y++)
+                {
+                    const cardSubType = cardType.sub_types[y];
+                    cardTypeToggles.push((
+                        <div className="card-type-toggle" key={cardSubType.sub_type_name}>
+                            <label>{cardSubType.title}</label>
+                            <input type="checkbox"
+                                   onChange={this.handleCardTypeFilterChange}
+                                   name={cardSubType.sub_type_name}
+                                   checked={this.state.card_type_filters.includes(cardSubType.sub_type_name) ? 'checked' : ''}
+                            />
+                        </div>
+                    ));
+                }
+            }
+
         }
 
         return (
