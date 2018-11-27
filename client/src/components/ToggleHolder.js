@@ -5,7 +5,7 @@ export default class ToggleHolder extends Component
 {
     render()
     {
-        const Toggles = this.props.type.map((type) =>
+        let Toggles = this.props.type.map((type) =>
         {
             if(!type.sub_types || !type.sub_types.length)
             {
@@ -27,7 +27,7 @@ export default class ToggleHolder extends Component
                         <Toggle
                             key={subType.name}
                             title={subType.title}
-                            name={subType.name}
+                            name={subType.sub_type_name}
                             onChange={this.props.type_change_handler}
                             checked={this.props.type_filters.includes(subType.sub_type_name) ? 'checked' : ''}
                         />

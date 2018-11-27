@@ -7,6 +7,7 @@ import APIService from './services/APIService';
 import CardListHolder from './components/CardListHolder';
 import ToggleHolder from './components/ToggleHolder';
 
+//Styles
 import './App.css';
 
 class App extends Component
@@ -19,6 +20,7 @@ class App extends Component
             name_filter: '',
             expansion_filters: ['core'], //TODO: save filters to cookie
             card_type_filters: ['disorders','fighting_art','secret_fighting_art','basic_resources','strange_resources','monster_resources','vermin'],
+            sort: 'card-type',
             cards: [],
             decks: [],
             expansions: [],
@@ -255,6 +257,12 @@ class App extends Component
         this.setState({ card_type_filters: cardTypeFilters });
     };
 
+    handleSortChange = (event) =>
+    {
+        const value = event.target.value;
+        this.setState({ sort: value });
+    };
+
     render()
     {
 
@@ -291,6 +299,18 @@ class App extends Component
                         type_change_handler={this.handleCardTypeFilterChange}
                     />
 
+                    <hr />
+
+                    <div className="sort-holder">
+                        <h3>Sort By:</h3>
+                        <br />
+                        <select className="sorter" value={this.state.sort} onChange={this.handleSortChange}>
+                            <option value='a-z'>A-Z</option>
+                            <option value='z-a'>Z-A</option>
+                            <option value='card-type'>By Type</option>
+                        </select>
+                    </div>
+
                 </header>
 
                 <main className="app-body">
@@ -299,6 +319,7 @@ class App extends Component
                         name_filter={this.state.name_filter}
                         expansion_filters={this.state.expansion_filters}
                         card_type_filters={this.state.card_type_filters}
+                        sort={this.state.sort}
                     />
                 </main>
 

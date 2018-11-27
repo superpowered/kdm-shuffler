@@ -82,21 +82,68 @@ export default class CardListHolder extends Component
 
     render()
     {
-        let cardList = this.props.decks
-            .filter(deck => this.cardFilter(deck.cards).length)
-            .map((deck, index) =>
-            {
-                return (
-                    <CardList
-                        key={index}
-                        list_title={deck.title}
-                        //todo: shouldn't have to call cardFilter twice
-                        cards={this.cardFilter(deck.cards)}
-                    />
-                );
-            });
+        const sort = this.props.sort;
+        let cardList;
 
-        if(!cardList.length)
+        if(sort === 'card-type')
+        {
+            //return multiple card lists
+            cardList = this.props.decks
+                .filter((deck) => this.cardFilter(deck.cards).length)
+                .map((deck, index) =>
+                {
+                    return (
+                        <CardList
+                            key={index}
+                            list_title={deck.title}
+                            //todo: shouldn't have to call cardFilter twice
+                            cards={this.cardFilter(deck.cards)}
+                        />
+                    );
+                });
+        }
+        else if((sort === 'a-z' || sort === 'z-a') && this.props.decks.length)
+        {
+            //Return 1 card list with all the cards
+            let cards = this.props.decks
+                .reduce((acc,deck) =>
+                {
+                    Array.prototype.push.apply(acc,deck.cards);
+                    return acc;
+                }, []);
+
+            if(sort === 'a-z')
+            {
+                cards = cards.sort((a,b) =>
+                {
+                    if(a.key < b.key)
+                        return -1;
+                    if(a.key > b.key)
+                        return 1;
+                    return 0;
+                });
+            }
+
+            if(sort === 'z-a')
+            {
+                cards = cards.sort((a,b) =>
+                {
+                    if(a.key < b.key)
+                        return 1;
+                    if(a.key > b.key)
+                        return -1;
+                    return 0;
+                });
+            }
+
+            cardList = (
+                <CardList
+                    cards={this.cardFilter(cards)}
+                />
+            );
+        }
+
+        if(!cardList || (Array.isArray(cardList) && !cardList.length))
             cardList = (<div className="card-list-holder-no-cards-found">-No cards found-</div>);
 
         return (
