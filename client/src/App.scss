@@ -14,6 +14,10 @@
     padding: 1em;
     text-align: center;
     background: $color_gray_1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
 
 .page-title
@@ -22,12 +26,13 @@
     font-weight: 700;
     margin-bottom: .5em;
     font-size: 2em;
+    width: 100%;
 }
 
 .card-filter-input
 {
     display: block;
-    margin: 0 auto 1em;
+    margin: 1em;
     max-width: 30em;
     width: 100%;
     font-size: 1em;
@@ -36,6 +41,25 @@
     -moz-appearance: none;
     appearance: none;
     border: none;
+}
+
+.options-toggle
+{
+    display: flex;
+    align-items: center;
+    span
+    {
+        margin-right: .25em;
+    }
+    img
+    {
+
+    }
+
+    &:hover
+    {
+        cursor: pointer;
+    }
 }
 
 .side-drawer-holder

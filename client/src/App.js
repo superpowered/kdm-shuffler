@@ -7,6 +7,8 @@ import APIService from './services/APIService';
 import CardListHolder from './components/CardListHolder';
 import ToggleHolder from './components/ToggleHolder';
 
+import menuIcon from './images/icon-menu.svg';
+
 //Styles
 import './App.css';
 
@@ -277,7 +279,9 @@ class App extends Component
             <div className={'app ' + (this.state.drawer_active ? 'side-drawer-active' : '') }>
 
                 <div className="side-drawer-holder">
-                    <div className="clickout" onClick={this.toggleDrawer}></div>
+                    <div className="clickout" onClick={this.toggleDrawer}>
+
+                    </div>
                     <div className="side-drawer">
 
                         <div className="sort-holder">
@@ -327,11 +331,9 @@ class App extends Component
                             placeholder="Search..."
                         />
 
-                        <div className="options" onClick={this.toggleDrawer}>
-                            Options:
-                            <div>
-
-                            </div>
+                        <div className="options-toggle" onClick={this.toggleDrawer}>
+                            <span>Options</span>
+                            <img src={menuIcon} className="menu-icon" alt="logo" />
                         </div>
 
                     </header>
