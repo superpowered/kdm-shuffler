@@ -48,7 +48,8 @@ app.get('/api/expansions', (req, res) =>
                     [
                         {
                             title: expansion.name + ' Resources',
-                            name: expansion.handle + '_resources',
+                            sub_type: expansion.handle + '_resources',
+                            handle: expansion.handle + '_resources',
                             type: 'resources'
                         }
                     ];
@@ -60,26 +61,29 @@ app.get('/api/expansions', (req, res) =>
             returnArray.push(
             {
                 title: 'Core',
-                name: 'core',
+                handle: 'core',
                 key: 'core',
                 decks_needed:
-                    [
-                        {
-                            title: 'White Lion Resources',
-                            name: 'white_lion_resources',
-                            type: 'resources'
-                        },
-                        {
-                            title: 'Screaming Antelope Resources',
-                            name: 'screaming_antelope_resources',
-                            type: 'resources'
-                        },
-                        {
-                            title: 'Phoenix Resources',
-                            name: 'phoenix_resources',
-                            type: 'resources'
-                        }
-                    ]
+                [
+                    {
+                        title: 'White Lion Resources',
+                        sub_type: 'white_lion_resources',
+                        handle: 'white_lion_resources',
+                        type: 'resources'
+                    },
+                    {
+                        title: 'Screaming Antelope Resources',
+                        sub_type: 'screaming_antelope_resources',
+                        handle: 'screaming_antelope_resources',
+                        type: 'resources'
+                    },
+                    {
+                        title: 'Phoenix Resources',
+                        sub_type: 'phoenix_resources',
+                        handle: 'phoenix_resources',
+                        type: 'resources'
+                    }
+                ]
             });
 
             return res.send(returnArray);

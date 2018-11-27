@@ -32,22 +32,22 @@ class App extends Component
                 {
                     title: 'Disorders',
                     name_singular: 'disorder',
-                    name: 'disorders'
+                    handle: 'disorders'
                 },
                 {
                     title: 'Fighting Arts',
                     name_singular: 'fighting_art',
-                    name: 'fighting_arts',
+                    handle: 'fighting_arts',
                     sub_types:
                     [
                         {
                             title: 'Fighting Arts',
-                            name: 'fighting_arts',
+                            handle: 'fighting_arts',
                             sub_type_name: 'fighting_art',
                         },
                         {
                             title: 'Secret Fighting Arts',
-                            name: 'secret_fighting_arts',
+                            handle: 'secret_fighting_arts',
                             sub_type_name: 'secret_fighting_art',
                         }
                     ]
@@ -55,27 +55,27 @@ class App extends Component
                 {
                     title: 'Resources',
                     name_singular: 'resource',
-                    name: 'resources',
+                    handle: 'resources',
                     sub_types:
                     [
                         {
                             title: 'Basic Resources',
-                            name: 'basic_resources',
+                            handle: 'basic_resources',
                             sub_type_name: 'basic_resources',
                         },
                         {
                             title: 'Strange Resources',
-                            name: 'strange_resources',
+                            handle: 'strange_resources',
                             sub_type_name: 'strange_resources',
                         },
                         {
                             title: 'Vermin',
-                            name: 'vermin',
+                            handle: 'vermin',
                             sub_type_name: 'vermin',
                         },
                         {
                             title: 'Monster Resources',
-                            name: 'monster_resources',
+                            handle: 'monster_resources',
                             sub_type_name: 'monster_resources',
                         }
                     ]
@@ -86,7 +86,7 @@ class App extends Component
 
     componentDidMount()
     {
-        const ignoreCache = false;
+        const ignoreCache = true;
         const cardTypes = this.state.card_types;
         let expansions = [];
         let cards = [];
@@ -140,11 +140,11 @@ class App extends Component
 
     getCardsByExpansion(cards, expansions)
     {
-        const hasCore = expansions.filter((expansion) => expansion.name === 'core').length;
+        const hasCore = expansions.filter((expansion) => expansion.handle === 'core').length;
         if(hasCore)
-            return cards.filter((card) => !card.expansion || expansions.filter((expansion) => expansion.name === card.expansion).length);
+            return cards.filter((card) => !card.expansion || expansions.filter((expansion) => expansion.handle === card.expansion).length);
         else
-            return cards.filter((card) => expansions.filter((expansion) => expansion.name === card.expansion).length);
+            return cards.filter((card) => expansions.filter((expansion) => expansion.handle === card.expansion).length);
     }
 
     getCardsByType(cards, type)
@@ -170,14 +170,14 @@ class App extends Component
         for(let x = 0; x < cardTypes.length; x++)
         {
             const cardType = cardTypes[x];
-            const cardTypeCards = this.getCardsByType(cards, cardType.name);
+            const cardTypeCards = this.getCardsByType(cards, cardType.handle);
 
             //If No sub types, just push this deck
             if(!cardType.sub_types || !cardType.sub_types.length)
             {
                 decks.push({
                     title: cardType.title,
-                    name: cardType.name,
+                    handle: cardType.handle,
                     cards: cardTypeCards
                 });
             }
@@ -188,7 +188,7 @@ class App extends Component
                     const cardSubType = cardType.sub_types[y];
                     decks.push({
                         title: cardSubType.title,
-                        name: cardSubType.name,
+                        handle: cardSubType.handle,
                         cards: this.getCardsBySubType(cardTypeCards, cardSubType.sub_type_name)
                     });
                 }
@@ -207,8 +207,8 @@ class App extends Component
                 decks.push({
                     title: expansions[x].decks_needed[y].title,
                     type: expansions[x].decks_needed[y].type,
-                    name: expansions[x].decks_needed[y].name,
-                    cards: this.getCardsBySubType(this.getCardsByType(cards, expansions[x].decks_needed[y].type), expansions[x].decks_needed[y].name)
+                    handle: expansions[x].decks_needed[y].handle,
+                    cards: this.getCardsBySubType(this.getCardsByType(cards, expansions[x].decks_needed[y].type), expansions[x].decks_needed[y].sub_type)
                 });
             }
         }

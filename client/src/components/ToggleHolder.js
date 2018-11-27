@@ -11,11 +11,11 @@ export default class ToggleHolder extends Component
             {
                 return (
                     <Toggle
-                        key={type.name}
+                        key={type.handle}
                         title={type.title}
-                        name={type.name}
+                        name={type.handle}
                         onChange={this.props.type_change_handler}
-                        checked={this.props.type_filters.includes(type.name) ? 'checked' : ''}
+                        checked={this.props.type_filters.includes(type.handle) ? 'checked' : ''}
                     />
                 );
             }
@@ -25,7 +25,7 @@ export default class ToggleHolder extends Component
                 {
                     return (
                         <Toggle
-                            key={subType.name}
+                            key={subType.handle}
                             title={subType.title}
                             name={subType.sub_type_name}
                             onChange={this.props.type_change_handler}
