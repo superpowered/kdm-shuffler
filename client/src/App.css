@@ -492,11 +492,12 @@ hr {
       right: 0; }
 
 .app.side-drawer-active {
-  position: fixed; }
+  overflow: hidden; }
   .app.side-drawer-active .app-wrapper {
     position: fixed;
     overflow-y: scroll;
-    filter: blur(1px); }
+    filter: blur(1px);
+    width: 100%; }
 
 .card {
   width: 16em;

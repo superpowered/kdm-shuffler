@@ -105,12 +105,13 @@
 
 .app.side-drawer-active
 {
-    position: fixed;
+    overflow: hidden;
     .app-wrapper
     {
         position: fixed;
         overflow-y: scroll;
         filter: blur(1px);
+        width: 100%;
     }
 }
 
