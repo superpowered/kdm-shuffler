@@ -6,9 +6,6 @@ export default class Toggle extends Component
     {
         return (
             <div className="toggle">
-                <label className="toggle-label">
-                    {this.props.title}
-                </label>
                 <input
                     className="toggle-input"
                     type="checkbox"
@@ -16,6 +13,9 @@ export default class Toggle extends Component
                     name={this.props.name}
                     checked={this.props.checked}
                 />
+                <label className="toggle-label">
+                    {this.props.title}
+                </label>
             </div>
         );
     }

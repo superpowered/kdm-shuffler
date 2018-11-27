@@ -21,6 +21,7 @@ class App extends Component
             expansion_filters: ['core'], //TODO: save filters to cookie
             card_type_filters: ['disorders','fighting_art','secret_fighting_art','basic_resources','strange_resources','monster_resources','vermin'],
             sort: 'card-type',
+            drawer_active: false,
             cards: [],
             decks: [],
             expansions: [],
@@ -263,66 +264,89 @@ class App extends Component
         this.setState({ sort: value });
     };
 
+    toggleDrawer = () =>
+    {
+        const active = !this.state.drawer_active;
+        //active ? document.documentElement.classList.add('side-drawer-active') : document.documentElement.classList.remove('side-drawer-active');
+        this.setState({ drawer_active: active });
+    };
+
     render()
     {
-
         return (
-            <div className="app">
+            <div className={'app ' + (this.state.drawer_active ? 'side-drawer-active' : '') }>
 
-                <header className="app-header">
+                <div className="side-drawer-holder">
+                    <div className="clickout" onClick={this.toggleDrawer}></div>
+                    <div className="side-drawer">
 
-                    <h1 className="page-title">
-                        Kingdom Death Cards
-                    </h1>
+                        <div className="sort-holder">
+                            <h3>Sort By:</h3>
+                            <br />
+                            <select className="sorter" value={this.state.sort} onChange={this.handleSortChange}>
+                                <option value='a-z'>A-Z</option>
+                                <option value='z-a'>Z-A</option>
+                                <option value='card-type'>By Type</option>
+                            </select>
+                        </div>
 
-                    <input
-                        className="card-filter-input"
-                        type="search"
-                        onChange={this.handleNameFilterChange}
-                        value={this.state.name_filter}
-                        placeholder="Search..."
-                    />
+                        <hr />
 
-                    <ToggleHolder
-                        title="Expansions"
-                        type={this.state.expansions}
-                        type_filters={this.state.expansion_filters}
-                        type_change_handler={this.handleExpansionFilterChange}
-                    />
+                        <ToggleHolder
+                            title="Expansions"
+                            type={this.state.expansions}
+                            type_filters={this.state.expansion_filters}
+                            type_change_handler={this.handleExpansionFilterChange}
+                        />
 
-                    <hr />
+                        <hr />
 
-                    <ToggleHolder
-                        title="Card Types"
-                        type={this.state.card_types}
-                        type_filters={this.state.card_type_filters}
-                        type_change_handler={this.handleCardTypeFilterChange}
-                    />
+                        <ToggleHolder
+                            title="Card Types"
+                            type={this.state.card_types}
+                            type_filters={this.state.card_type_filters}
+                            type_change_handler={this.handleCardTypeFilterChange}
+                        />
 
-                    <hr />
-
-                    <div className="sort-holder">
-                        <h3>Sort By:</h3>
-                        <br />
-                        <select className="sorter" value={this.state.sort} onChange={this.handleSortChange}>
-                            <option value='a-z'>A-Z</option>
-                            <option value='z-a'>Z-A</option>
-                            <option value='card-type'>By Type</option>
-                        </select>
                     </div>
+                </div>
 
-                </header>
+                <div className='app-wrapper'>
 
-                <main className="app-body">
-                    <CardListHolder
-                        decks={this.state.decks}
-                        name_filter={this.state.name_filter}
-                        expansion_filters={this.state.expansion_filters}
-                        card_type_filters={this.state.card_type_filters}
-                        sort={this.state.sort}
-                    />
-                </main>
+                    <header className="app-header">
 
+                        <h1 className="page-title">
+                            Kingdom Death Cards
+                        </h1>
+
+                        <input
+                            className="card-filter-input"
+                            type="search"
+                            onChange={this.handleNameFilterChange}
+                            value={this.state.name_filter}
+                            placeholder="Search..."
+                        />
+
+                        <div className="options" onClick={this.toggleDrawer}>
+                            Options:
+                            <div>
+
+                            </div>
+                        </div>
+
+                    </header>
+
+                    <main className="app-body">
+                        <CardListHolder
+                            decks={this.state.decks}
+                            name_filter={this.state.name_filter}
+                            expansion_filters={this.state.expansion_filters}
+                            card_type_filters={this.state.card_type_filters}
+                            sort={this.state.sort}
+                        />
+                    </main>
+
+                </div>
             </div>
         );
     }

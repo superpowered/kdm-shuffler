@@ -3,6 +3,11 @@
 @import "styles/fonts";
 @import "styles/normalize";
 
+.app-wrapper
+{
+    transition: all .3s;
+}
+
 //TODO: header file
 .app-header
 {
@@ -31,6 +36,58 @@
     -moz-appearance: none;
     appearance: none;
     border: none;
+}
+
+.side-drawer-holder
+{
+    position: fixed;
+    top: -100%;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    transition: all 0s ease-in-out .3s;
+
+    .clickout
+    {
+        @include absolute-fill();
+        z-index: 1;
+    }
+
+    .side-drawer
+    {
+        position: absolute;
+        z-index: 2;
+        height: 100%;
+        width: 15em;
+        top: 0;
+        right: -15em;
+        background: $color_gray_2;
+        transition: right .3s;
+        padding: 2em 1em;
+        overflow-x: hidden;
+    }
+
+    .app.side-drawer-active &
+    {
+        top: 0;
+        transition: all 0s;
+        .side-drawer
+        {
+            right: 0;
+        }
+    }
+}
+
+.app.side-drawer-active
+{
+    position: fixed;
+    .app-wrapper
+    {
+        position: fixed;
+        overflow-y: scroll;
+        filter: blur(1px);
+    }
 }
 
 //TODO: should these just be loaded per component?

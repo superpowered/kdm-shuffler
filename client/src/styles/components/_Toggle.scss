@@ -1,16 +1,15 @@
 .toggle
 {
-    display: inline-block;
-    margin-right: 1em;
+    display: block;
     margin-bottom: .5em;
     font-size: .875em;
 
     &-label
     {
-        margin-right: .25em;
+        
     }
     &-input
     {
-
+        margin-right: .25em;
     }
 }
