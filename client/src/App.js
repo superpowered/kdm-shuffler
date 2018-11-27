@@ -86,7 +86,7 @@ class App extends Component
 
     componentDidMount()
     {
-        const ignoreCache = true;
+        const ignoreCache = false; //TODO: make a refresh button
         const cardTypes = this.state.card_types;
         let expansions = [];
         let cards = [];
