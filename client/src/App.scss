@@ -1,80 +1,14 @@
-$font_1: 'Open Sans', sans-serif;
-$font_2: 'Libre Baskerville', serif;
+@import "styles/variables";
+@import "styles/mixins";
+@import "styles/fonts";
+@import "styles/normalize";
 
-$icon_font_1: 'kdm-font-1';
-$icon_font_2: 'kdm-font-2';
-
-/*@font-face
-{
-    font-family: 'Font Name';
-
-    src: url('fonts/FONT/FILE.woff2') format('woff2'),
-    url('fonts/FONT/FILE.woff') format('woff'),
-    url('fonts/FONT/FILE.ttf') format('truetype');
-
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}*/
-
-@font-face
-{
-    font-family: 'kdm-font-1';
-
-    src: url('fonts/kdm-font-10.ttf') format('truetype');
-
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face
-{
-    font-family: 'kdm-font-2';
-
-    src: url('fonts/kdm-font-2.ttf') format('truetype');
-
-    font-weight: 400;
-    font-style: normal;
-}
-
-//TODO: normalize
-//TODO: break into smaller files
-*
-{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: $font_1;
-}
-h1,h2,h3,h4,h5,h6
-{
-    font-family: $font_2;
-    font-weight: 300;
-}
-
-
-@mixin aspect-ratio($width, $height) {
-    position: relative;
-    &:before {
-        display: block;
-        content: "";
-        width: 100%;
-        padding-top: ($height / $width) * 100%;
-    }
-    > .content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-}
-
+//TODO: header file
 .app-header
 {
     padding: 1em;
     text-align: center;
-    background: #f5f5f5;
+    background: $color_gray_1;
 }
 
 .page-title
@@ -99,51 +33,22 @@ h1,h2,h3,h4,h5,h6
     border: none;
 }
 
-.expansion-toggle,
-.card-type-toggle
-{
-    display: inline-block;
-    margin-right: 1em;
-    margin-bottom: .5em;
-    label
-    {
-        margin-right: .5em;
-    }
-    input
-    {
+//TODO: should these just be loaded per component?
 
-    }
-}
-
-.no-cards-found
-{
-    text-align: center;
-    font-size: 3em;
-    font-weight: bold;
-    padding: 1em;
-}
-.card-list
-{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
-    margin: 1em 0;
-
-    > .wrapper
-    {
-
-    }
-    .list-title
-    {
-        width: 100%;
-        margin-bottom: 1em;
-    }
-    .list-break
-    {
-        width: 100%;
-        margin-bottom: 1em;
-    }
-}
 //Cards
-@import "styles/card";
+@import "styles/components/Card";
+
+//CardList
+@import "styles/components/CardList";
+
+//CardListHolder
+@import "styles/components/CardListHolder";
+
+//Deck
+@import "styles/components/Deck";
+
+//Toggle
+@import "styles/components/Toggle";
+
+//ToggleHolder
+@import "styles/components/ToggleHolder";

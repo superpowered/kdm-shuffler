@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import APIService from './services/APIService';
 
 //Components
-import FilterableCardLists from './components/FilterableCardLists';
+import CardListHolder from './components/CardListHolder';
 import ToggleHolder from './components/ToggleHolder';
 
 import './App.css';
@@ -17,7 +17,7 @@ class App extends Component
         this.state =
         {
             name_filter: '',
-            expansion_filters: ['core'],
+            expansion_filters: ['core'], //TODO: save filters to cookie
             card_type_filters: ['disorders','fighting_art','secret_fighting_art','basic_resources','strange_resources','monster_resources','vermin'],
             cards: [],
             decks: [],
@@ -34,46 +34,46 @@ class App extends Component
                     name_singular: 'fighting_art',
                     name: 'fighting_arts',
                     sub_types:
-                        [
-                            {
-                                title: 'Fighting Arts',
-                                name: 'fighting_arts',
-                                sub_type_name: 'fighting_art',
-                            },
-                            {
-                                title: 'Secret Fighting Arts',
-                                name: 'secret_fighting_arts',
-                                sub_type_name: 'secret_fighting_art',
-                            }
-                        ]
+                    [
+                        {
+                            title: 'Fighting Arts',
+                            name: 'fighting_arts',
+                            sub_type_name: 'fighting_art',
+                        },
+                        {
+                            title: 'Secret Fighting Arts',
+                            name: 'secret_fighting_arts',
+                            sub_type_name: 'secret_fighting_art',
+                        }
+                    ]
                 },
                 {
                     title: 'Resources',
                     name_singular: 'resource',
                     name: 'resources',
                     sub_types:
-                        [
-                            {
-                                title: 'Basic Resources',
-                                name: 'basic_resources',
-                                sub_type_name: 'basic_resources',
-                            },
-                            {
-                                title: 'Strange Resources',
-                                name: 'strange_resources',
-                                sub_type_name: 'strange_resources',
-                            },
-                            {
-                                title: 'Vermin',
-                                name: 'vermin',
-                                sub_type_name: 'vermin',
-                            },
-                            {
-                                title: 'Monster Resources',
-                                name: 'monster_resources',
-                                sub_type_name: 'monster_resources',
-                            }
-                        ]
+                    [
+                        {
+                            title: 'Basic Resources',
+                            name: 'basic_resources',
+                            sub_type_name: 'basic_resources',
+                        },
+                        {
+                            title: 'Strange Resources',
+                            name: 'strange_resources',
+                            sub_type_name: 'strange_resources',
+                        },
+                        {
+                            title: 'Vermin',
+                            name: 'vermin',
+                            sub_type_name: 'vermin',
+                        },
+                        {
+                            title: 'Monster Resources',
+                            name: 'monster_resources',
+                            sub_type_name: 'monster_resources',
+                        }
+                    ]
                 }
             ]
         };
@@ -131,6 +131,8 @@ class App extends Component
             });
     }
 
+    //functions for filtering down cards
+
     getCardsByExpansion(cards, expansions)
     {
         const hasCore = expansions.filter((expansion) => expansion.name === 'core').length;
@@ -149,6 +151,8 @@ class App extends Component
     {
         return cards.filter((card) => card.sub_type && subType === card.sub_type);
     }
+
+    //Builds all the needed decks
 
     buildDecks = (cards, expansions) =>
     {
@@ -186,7 +190,7 @@ class App extends Component
             }
         }
 
-        //2. Monster Resource Decks
+        //2. Expansion extra Decks
         for(let x = 0; x < expansions.length; x++)
         {
             if(!expansions[x].decks_needed)
@@ -203,6 +207,10 @@ class App extends Component
                 });
             }
         }
+
+        //TODO: organization/feature: disorder, basic resource, etc.. decks should be listed in "decks_needed" for core,
+        //TODO: also include disorders & fighting arts for expansions in "decks_needed"
+        //TODO: then combine various decks with the same keys
 
         //TODO: feature: varying card amounts for resource decks
         return decks;
@@ -286,7 +294,7 @@ class App extends Component
                 </header>
 
                 <main className="app-body">
-                    <FilterableCardLists
+                    <CardListHolder
                         decks={this.state.decks}
                         name_filter={this.state.name_filter}
                         expansion_filters={this.state.expansion_filters}

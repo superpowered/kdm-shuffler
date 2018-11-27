@@ -2,7 +2,7 @@ import {Component} from "react";
 import React from "react";
 import CardList from "./CardList";
 
-export default class FilterableCardLists extends Component
+export default class CardListHolder extends Component
 {
     cardFilter = (cards) =>
     {

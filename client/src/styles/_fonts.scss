@@ -1,0 +1,22 @@
+@import "variables";
+@import "mixins";
+
+@font-face
+{
+    font-family: 'kdm-font-1';
+
+    src: url('fonts/kdm-font-10.ttf') format('truetype');
+
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face
+{
+    font-family: 'kdm-font-2';
+
+    src: url('fonts/kdm-font-2.ttf') format('truetype');
+
+    font-weight: 400;
+    font-style: normal;
+}

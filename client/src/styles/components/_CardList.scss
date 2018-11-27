@@ -1,0 +1,23 @@
+.card-list
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    margin: 1em 0;
+
+    > .wrapper
+    {
+
+    }
+    .list-title
+    {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+    .list-break
+    {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+}
