@@ -4,7 +4,7 @@
 @font-face
 {
     font-family: 'kdm-font-1';
-
+    //noinspection CssUnknownTarget
     src: url('fonts/kdm-font-10.ttf') format('truetype');
 
     font-weight: 400;
@@ -14,7 +14,7 @@
 @font-face
 {
     font-family: 'kdm-font-2';
-
+    //noinspection CssUnknownTarget
     src: url('fonts/kdm-font-2.ttf') format('truetype');
 
     font-weight: 400;
