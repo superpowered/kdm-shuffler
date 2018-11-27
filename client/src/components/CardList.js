@@ -8,11 +8,15 @@ export default class CardList extends Component
     {
         return (
             <div className="card-list">
-                <h3 className="list-title">
-                    {this.props.list_title}
-                </h3>
-                <hr className="list-break"/>
-                { this.props.cards.map((card, index) => <Card key={index} card={card} />) }
+                <div  className="card-list-wrapper">
+                    <h3 className="card-list-title">
+                        {this.props.list_title}
+                    </h3>
+                    <hr className="card-list-break"/>
+                    <div  className="card-list-card-wrapper">
+                        { this.props.cards.map((card, index) => <Card key={index} card={card} />) }
+                    </div>
+                </div>
             </div>
         );
     }

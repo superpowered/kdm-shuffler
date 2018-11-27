@@ -24,19 +24,19 @@ export default class Card extends Component
 
         return (
             <div className={"card " + card.type + " " + card.sub_type}>
-                <div className="wrapper">
-                    <h4 className="title">
+                <div className="card-wrapper">
+                    <h4 className="card-title">
                         {card.name}
                     </h4>
-                    <div className="sub-types">
+                    <div className="card-sub-types">
                         {subTypes}
                     </div>
-                    <div className="image">
+                    <div className="card-image">
                     </div>
-                    <div className="flavor-text">
+                    <div className="card-flavor-text">
                         {card.flavor_text}
                     </div>
-                    <div className="description" dangerouslySetInnerHTML={{__html:clean_desc }}>
+                    <div className="card-description" dangerouslySetInnerHTML={{__html:clean_desc }}>
                     </div>
                 </div>
             </div>

@@ -97,11 +97,13 @@ export default class CardListHolder extends Component
             });
 
         if(!cardList.length)
-            cardList = (<div className="no-cards-found">-No cards found-</div>);
+            cardList = (<div className="card-list-holder-no-cards-found">-No cards found-</div>);
 
         return (
-            <div>
-                {cardList}
+            <div className="card-list-holder">
+                <div className="card-list-holder-wrapper">
+                    {cardList}
+                </div>
             </div>
         );
     }

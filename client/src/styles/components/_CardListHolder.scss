@@ -1,7 +1,15 @@
-.no-cards-found
+.card-list-holder
 {
-    text-align: center;
-    font-size: 3em;
-    font-weight: bold;
-    padding: 1em;
+    &-wrapper
+    {
+
+    }
+
+    &-no-cards-found
+    {
+        text-align: center;
+        font-size: 3em;
+        font-weight: bold;
+        padding: 1em;
+    }
 }

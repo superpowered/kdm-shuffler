@@ -492,6 +492,7 @@ html
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family: $font_1;
 }
 body
 {
@@ -534,4 +535,8 @@ hr
     color:#000;
     background-color:#000;
     margin: .5em auto;
+}
+h1,h2,h3,h4,h5,h6
+{
+
 }

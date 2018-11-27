@@ -10,14 +10,14 @@
     position: relative;
     overflow: hidden;
 
-    > .wrapper
+    &-wrapper
     {
         position: relative;
         z-index: 2;
         padding: 1em;
     }
 
-    .title
+    &-title
     {
         font-size: 1em;
         margin-bottom: 0;
@@ -26,7 +26,7 @@
         z-index: 2;
     }
 
-    .sub-types
+    &-sub-types
     {
         margin-bottom: 1em;
         font-size: .6em;
@@ -34,7 +34,7 @@
         z-index: 2;
     }
 
-    .image
+    &-image
     {
         @include aspect-ratio(1.5,1);
         margin-bottom: 1em;
@@ -42,7 +42,7 @@
         z-index: 1;
     }
 
-    .flavor-text
+    &-flavor-text
     {
         font-size: .6em;
         font-style: italic;
@@ -52,7 +52,7 @@
         padding: 0 2em;
     }
 
-    .description
+    &-description
     {
         font-size: .6em;
         padding-left: 1em;
@@ -105,15 +105,13 @@
             font-family: $icon_font_1;
             vertical-align: middle;
         }
-
-        //TODO: need to make custom font for special icons
     }
 
     &.fighting_arts
     {
         background: #e5e5e5;
 
-        .image
+        .card-image
         {
             margin-left: -1em;
             margin-right: -1em;
@@ -139,12 +137,12 @@
             background-position: center 20px;
         }
 
-        .title
+        .card-title
         {
             font-weight: 700;
             color: #788335;
         }
-        .sub-types
+        .card-sub-types
         {
             font-weight: 700;
             color: #788335;
@@ -161,34 +159,18 @@
             display: none;
         }
 
-        > .wrapper
+        .card-wrapper
         {
             background: url('images/disorder-2.jpg') no-repeat top center;
             background-size: contain;
         }
-        .sub-types
+        .card-sub-types
         {
             opacity: 0;
         }
-        .image
+        .card-image
         {
             margin-bottom: .5em;
-        }
-
-
-        &:before
-        {
-            content: '';
-            position: absolute;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse at center, #5f6156 0%, #212121 70%, #212121 100%);
-            background-size: 15em 15em;
-            background-repeat: no-repeat;
-            background-position: center 20px;
         }
     }
 }

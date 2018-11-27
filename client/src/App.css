@@ -384,7 +384,8 @@ html {
   font-size: 100%;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Open Sans", sans-serif; }
 
 body {
   min-height: 100%;
@@ -452,78 +453,78 @@ hr {
   min-height: 25em;
   position: relative;
   overflow: hidden; }
-  .card > .wrapper {
+  .card-wrapper {
     position: relative;
     z-index: 2;
     padding: 1em; }
-  .card .title {
+  .card-title {
     font-size: 1em;
     margin-bottom: 0;
     font-weight: 100;
     position: relative;
     z-index: 2; }
-  .card .sub-types {
+  .card-sub-types {
     margin-bottom: 1em;
     font-size: .6em;
     position: relative;
     z-index: 2; }
-  .card .image {
+  .card-image {
     position: relative;
     margin-bottom: 1em;
     position: relative;
     z-index: 1; }
-    .card .image:before {
+    .card-image:before {
       display: block;
       content: "";
       width: 100%;
       padding-top: 66.66667%; }
-    .card .image > .content {
+    .card-image > .content {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0; }
-  .card .flavor-text {
+  .card-flavor-text {
     font-size: .6em;
     font-style: italic;
     margin-bottom: 1em;
     position: relative;
     z-index: 2;
     padding: 0 2em; }
-  .card .description {
+  .card-description {
     font-size: .6em;
     padding-left: 1em;
     padding-right: 1em;
     position: relative;
     z-index: 2; }
-    .card .description br {
+    .card-description br {
       content: "-" !important;
       display: block !important;
       margin-bottom: 1em !important; }
-    .card .description table {
+    .card-description table {
       text-align: left;
       border-collapse: collapse; }
-      .card .description table tr:nth-of-type(even) {
+      .card-description table tr:nth-of-type(even) {
         background: rgba(0, 0, 0, 0.05); }
-      .card .description table td {
+      .card-description table td {
         padding: .25em;
         vertical-align: top; }
-        .card .description table td:first-child {
+        .card-description table td:first-child {
           width: 3em; }
-    .card .description font {
+    .card-description font {
       font-family: "kdm-font-2"; }
-    .card .description .kd_blue_font {
+    .card-description .kd_blue_font {
       font-family: "Open Sans", sans-serif;
       color: blue; }
-    .card .description .kd_pink_font {
+    .card-description .kd_pink_font {
       font-family: "Open Sans", sans-serif;
       color: red; }
-    .card .description .kdm_font {
+    .card-description .kdm_font {
       font-family: "kdm-font-1";
       vertical-align: middle; }
   .card.fighting_arts {
     background: #e5e5e5; }
-    .card.fighting_arts .image {
+    .card.fighting_arts .card-image {
       margin-left: -1em;
       margin-right: -1em;
       background-color: rgba(0, 0, 0, 0.25); }
@@ -541,10 +542,10 @@ hr {
       background-size: 15em 15em;
       background-repeat: no-repeat;
       background-position: center 20px; }
-    .card.resources .title {
+    .card.resources .card-title {
       font-weight: 700;
       color: #788335; }
-    .card.resources .sub-types {
+    .card.resources .card-sub-types {
       font-weight: 700;
       color: #788335; }
   .card.disorders {
@@ -552,40 +553,29 @@ hr {
     background: #212121; }
     .card.disorders:before {
       display: none; }
-    .card.disorders > .wrapper {
+    .card.disorders .card-wrapper {
       background: url("images/disorder-2.jpg") no-repeat top center;
       background-size: contain; }
-    .card.disorders .sub-types {
+    .card.disorders .card-sub-types {
       opacity: 0; }
-    .card.disorders .image {
+    .card.disorders .card-image {
       margin-bottom: .5em; }
-    .card.disorders:before {
-      content: '';
-      position: absolute;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(ellipse at center, #5f6156 0%, #212121 70%, #212121 100%);
-      background-size: 15em 15em;
-      background-repeat: no-repeat;
-      background-position: center 20px; }
 
 .card-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   text-align: center;
   margin: 1em 0; }
-  .card-list .list-title {
+  .card-list-title {
     width: 100%;
     margin-bottom: 1em; }
-  .card-list .list-break {
+  .card-list-break {
     width: 100%;
     margin-bottom: 1em; }
+  .card-list-card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; }
 
-.no-cards-found {
+.card-list-holder-no-cards-found {
   text-align: center;
   font-size: 3em;
   font-weight: bold;
@@ -594,8 +584,14 @@ hr {
 .toggle {
   display: inline-block;
   margin-right: 1em;
-  margin-bottom: .5em; }
-  .toggle label {
-    margin-right: .5em; }
+  margin-bottom: .5em;
+  font-size: .875em; }
+  .toggle-label {
+    margin-right: .25em; }
+
+.toggle-holder {
+  margin: 1em 0; }
+  .toggle-holder-title {
+    margin-bottom: .75em; }
 
 /*# sourceMappingURL=App.css.map */

@@ -3,11 +3,13 @@
     display: inline-block;
     margin-right: 1em;
     margin-bottom: .5em;
-    label
+    font-size: .875em;
+
+    &-label
     {
-        margin-right: .5em;
+        margin-right: .25em;
     }
-    input
+    &-input
     {
 
     }
