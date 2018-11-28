@@ -134,6 +134,13 @@ class App extends Component
                     expansions: expansions,
                     decks: decks
                 });
+            })
+            .catch((error) =>
+            {
+                console.log(error);
+                this.setState({
+                    error: 'There was an error setting up the application.'
+                });
             });
     }
 
@@ -281,7 +288,10 @@ class App extends Component
     {
         return (
             <div className={'app ' + (this.state.drawer_active ? 'side-drawer-active' : '') }>
-
+                {
+                    this.state.error &&
+                        <div className="error-display">{this.state.error}</div>
+                }
                 <div className="side-drawer-holder">
                     <div className="clickout" onClick={this.toggleDrawer}>
 
