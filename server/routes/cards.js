@@ -10,7 +10,7 @@ router.get('/:card_type', async (req, res) =>
     try
     {
         axios
-            .get(API + 'game_assetss/' + req.params.card_type)
+            .get(API + 'game_asset/' + req.params.card_type)
             .then((response) =>
             {
                 let returnArray = [];

@@ -7,8 +7,10 @@
         "build-client": "cd client && yarn build",
         "client": "cd client && yarn start",
         "server": "cd server && nodemon server.js",
-        "dev": "PORT=50001 SERVER_PORT=5002 concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-        "postinstall": "cd client && yarn install"
+        "dev": "PORT=5001 SERVER_PORT=5002 concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+        "postinstall": "cd client && yarn install",
+        "start": "cd server && node server.js",
+        "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build"
     },
     "keywords": [],
     "author": "",
