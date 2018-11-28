@@ -453,7 +453,8 @@ html {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border: none; }
+  border: none;
+  color: #000000; }
 
 .options-toggle {
   display: flex;
