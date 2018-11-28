@@ -7,6 +7,7 @@ import APIService from './services/APIService';
 import CardListHolder from './components/CardListHolder';
 import ToggleHolder from './components/ToggleHolder';
 
+//Menu Image
 import menuIcon from './images/icon-menu.svg';
 
 //Styles

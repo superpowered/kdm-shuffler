@@ -420,13 +420,17 @@ hr {
   background-color: #000;
   margin: .5em auto; }
 
+html {
+  color: #ffffff;
+  background-color: #313131; }
+
 .app-wrapper {
   transition: all .3s; }
 
 .app-header {
   padding: 1em;
   text-align: center;
-  background: #f5f5f5;
+  background: #5b5b5b;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -481,10 +485,13 @@ hr {
     width: 15em;
     top: 0;
     right: -15em;
-    background: #d9d9d9;
+    background: #313131;
     transition: right .3s;
     padding: 2em 1em;
     overflow-x: hidden; }
+    .side-drawer-holder .side-drawer select {
+      background-color: transparent;
+      width: 100%; }
   .app.side-drawer-active .side-drawer-holder {
     top: 0;
     transition: all 0s; }
@@ -508,7 +515,8 @@ hr {
   line-height: 1.5;
   min-height: 25em;
   position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  color: #000000; }
   .card-wrapper {
     position: relative;
     z-index: 2;

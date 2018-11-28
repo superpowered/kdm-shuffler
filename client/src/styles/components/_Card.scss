@@ -1,3 +1,6 @@
+@import "../variables";
+@import "../mixins";
+
 .card
 {
     width: 16em;
@@ -9,6 +12,7 @@
     min-height: 25em;
     position: relative;
     overflow: hidden;
+    color: $color_black;
 
     &-wrapper
     {

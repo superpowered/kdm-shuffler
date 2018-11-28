@@ -3,7 +3,6 @@ const router = express.Router();
 const axios = require('axios');
 const API = require('../API');
 
-
 router.get('/', async (req, res) =>
 {
     try
@@ -40,26 +39,26 @@ router.get('/', async (req, res) =>
                     handle: 'core',
                     key: 'core',
                     decks_needed:
-                        [
-                            {
-                                title: 'White Lion Resources',
-                                sub_type: 'white_lion_resources',
-                                handle: 'white_lion_resources',
-                                type: 'resources'
-                            },
-                            {
-                                title: 'Screaming Antelope Resources',
-                                sub_type: 'screaming_antelope_resources',
-                                handle: 'screaming_antelope_resources',
-                                type: 'resources'
-                            },
-                            {
-                                title: 'Phoenix Resources',
-                                sub_type: 'phoenix_resources',
-                                handle: 'phoenix_resources',
-                                type: 'resources'
-                            }
-                        ]
+                    [
+                        {
+                            title: 'White Lion Resources',
+                            sub_type: 'white_lion_resources',
+                            handle: 'white_lion_resources',
+                            type: 'resources'
+                        },
+                        {
+                            title: 'Screaming Antelope Resources',
+                            sub_type: 'screaming_antelope_resources',
+                            handle: 'screaming_antelope_resources',
+                            type: 'resources'
+                        },
+                        {
+                            title: 'Phoenix Resources',
+                            sub_type: 'phoenix_resources',
+                            handle: 'phoenix_resources',
+                            type: 'resources'
+                        }
+                    ]
                 });
 
                 return res.send(returnArray);

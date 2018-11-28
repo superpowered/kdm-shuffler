@@ -3,6 +3,12 @@
 @import "styles/fonts";
 @import "styles/normalize";
 
+html
+{
+    color: $color_white;
+    background-color: $color_black_1;
+}
+
 .app-wrapper
 {
     transition: all .3s;
@@ -13,7 +19,7 @@
 {
     padding: 1em;
     text-align: center;
-    background: $color_gray_1;
+    background: $color_gray_3;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -62,6 +68,7 @@
     }
 }
 
+
 .side-drawer-holder
 {
     position: fixed;
@@ -71,7 +78,6 @@
     width: 100%;
     z-index: 100;
     transition: all 0s ease-in-out .3s;
-
     .clickout
     {
         @include absolute-fill();
@@ -86,10 +92,16 @@
         width: 15em;
         top: 0;
         right: -15em;
-        background: $color_gray_2;
+        background: $color_black_1;
         transition: right .3s;
         padding: 2em 1em;
         overflow-x: hidden;
+
+        select
+        {
+            background-color: transparent;
+            width: 100%;
+        }
     }
 
     .app.side-drawer-active &

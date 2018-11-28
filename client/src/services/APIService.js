@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const API = '/api/';
 
-
 export default class APIService
 {
     //Gets Cards, turns into array - Returns
