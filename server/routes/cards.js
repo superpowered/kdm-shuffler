@@ -3,6 +3,8 @@ const router = express.Router();
 const axios = require('axios');
 const API = require('../API');
 
+//TODO: / probably just list out the card types?
+
 router.get('/:card_type', async (req, res) =>
 {
     try

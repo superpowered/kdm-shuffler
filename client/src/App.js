@@ -273,6 +273,9 @@ class App extends Component
         this.setState({ drawer_active: active });
     };
 
+
+    //TODO: side-drawer to component
+    
     render()
     {
         return (
