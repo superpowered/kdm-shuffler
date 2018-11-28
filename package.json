@@ -2,7 +2,6 @@
     "name": "kdm-shuffler",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
     "scripts": {
         "build-client": "cd client && yarn build",
         "client": "cd client && yarn start",
