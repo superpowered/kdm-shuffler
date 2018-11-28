@@ -1,6 +1,8 @@
 # KDM Shuffler
 
-Shuffles and filters Kingdom Death: Monster cards.
+Filters Kingdom Death: Monster cards.
+
+**...doesn't actually shuffle cards yet**
 
 run:
 `yarn run dev`
