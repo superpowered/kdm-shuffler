@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 //Services
 import APIService from './services/APIService';
@@ -22,7 +23,16 @@ class App extends Component
         {
             name_filter: '',
             expansion_filters: ['core'], //TODO: save filters to cookie
-            card_type_filters: ['disorders','fighting_art','secret_fighting_art','basic_resources','strange_resources','monster_resources','vermin'],
+            card_type_filters:
+            [
+                'disorders',
+                'fighting_art',
+                'secret_fighting_art',
+                'basic_resources',
+                'strange_resources',
+                'monster_resources',
+                'vermin'
+            ],
             sort: 'card-type',
             drawer_active: false,
             cards: [],
